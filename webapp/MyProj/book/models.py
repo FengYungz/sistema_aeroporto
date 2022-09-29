@@ -8,38 +8,41 @@ from django.utils import timezone
 # Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
 
 class Voo(models.Model):
-    companhia = models.CharField(max_length=50)
-    codigo = models.PositiveIntegerField()
-    
-    previsao_saida = models.DateTimeField()
-    previsao_chegada = models.DateTimeField()
-    
-    real_saida = models.DateTimeField()
-    real_chegada = models.DateTimeField()
+	companhia = models.CharField(max_length=50)
+	codigo = models.PositiveIntegerField()
+	
+	previsao_saida = models.DateTimeField()
+	previsao_chegada = models.DateTimeField()
+	
+	real_saida = models.DateTimeField()
+	real_chegada = models.DateTimeField()
 
-    rota = models.CharField(max_length=200)
-    status = models.CharField(max_length=200)
+	rota = models.CharField(max_length=200)
+
+	aeroporto_chegada = models.CharField(max_length=200)
+	aeroporto_saida = models.CharField(max_length=200)
+	status = models.CharField(max_length=200)
 
 
 
 
-    def publish(self):
-        self.data = timezone.now()
-        self.save()
+	def publish(self):
+		self.data = timezone.now()
+		self.save()
 
-    def __str__(self):
-        return self.nome
+	def __str__(self):
+		return self.nome
 
 
 class Funcionario(models.Model):
-    nome = models.CharField(max_length=200)
-    cpf = models.CharField(max_length=11)
-    cargo = models.CharField(max_length=200)
+	nome = models.CharField(max_length=200)
+	cpf = models.CharField(max_length=11)
+	cargo = models.CharField(max_length=200)
 
-    def publish(self):
-        self.save()
+	def publish(self):
+		self.save()
 
-    def __str__(self):
-        return self.nome
+	def __str__(self):
+		return self.nome
 
 
