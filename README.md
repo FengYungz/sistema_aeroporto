@@ -48,11 +48,20 @@ python -m venv env
 ```bash
 .\env\scripts\activate.ps1
 ```
+
 ---
-Tente isso caso se o comando acima não funcionar:
+Tente isso caso o comando acima não funcionar:
 
 ```bash
 .\env\bin\activate.ps1
+```
+
+---
+
+Tente isso também caso o comando acima não funcione:
+
+```bash
+.\venv\Scripts\Activate.ps1
 ```
 
 # Executando aplicação
