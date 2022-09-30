@@ -72,6 +72,22 @@ Navegue até
 \sistema_aeroporto\webapp\MyProj
 ```
 
+---
+
+
+Vamos certificar que o pré-requisisto `Django` está instalado:
+
+Use
+
+ ```bash
+pip install django
+```
+---
+
+
+Vamos executar a aplicação:
+
+
 Use
 
 ```bash
