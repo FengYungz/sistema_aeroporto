@@ -18,9 +18,6 @@ class Voo(models.Model):
 	previsao_chegada = models.DateTimeField(null=False)
 	previsao_partida = models.DateTimeField(null=False)
 	
-	data_chegada = models.DateTimeField(null=True)
-	data_saida = models.DateTimeField(null=True)
-
 	status = models.CharField(max_length=20)
 	
 	rota = models.CharField(max_length=200, null=False)
@@ -28,6 +25,18 @@ class Voo(models.Model):
 	class Meta:
 		db_table = 'Voos'
 
+class estado_dinamico(models.Model):
+	id = models.BigAutoField(primary_key=True)
+
+	codigo = models.CharField(max_length=12, null=False, unique=True)
+
+	data_saida = models.DateTimeField(null=True)
+	data_chegada = models.DateTimeField(null=True)
+	
+	status = models.CharField(max_length=20)
+
+	class Meta:
+			db_table = 'estado_dinamico'
 
 
 class Funcionario(models.Model):
