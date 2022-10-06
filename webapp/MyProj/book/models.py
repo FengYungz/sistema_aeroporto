@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+import datetime
+
 
 #exemplo de instrucoes
 # Produto.objects.filter(idproduto=x)
@@ -16,8 +18,8 @@ class Voo(models.Model):
 	previsao_chegada = models.DateTimeField(null=False)
 	previsao_partida = models.DateTimeField(null=False)
 	
-	data_chegada = models.DateTimeField( blank=True)
-	data_saida = models.DateTimeField( blank=True)
+	data_chegada = models.DateTimeField(null=True)
+	data_saida = models.DateTimeField(null=True)
 
 	status = models.CharField(max_length=20)
 	
