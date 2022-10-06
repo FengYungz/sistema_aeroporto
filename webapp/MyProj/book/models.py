@@ -10,7 +10,7 @@ from django.utils import timezone
 class Voo(models.Model):
 	id = models.BigAutoField(primary_key=True)
 
-	codigo = models.CharField(length=12, null=False, unique=True)
+	codigo = models.CharField(max_length=12, null=False, unique=True)
 	companhia = models.CharField(max_length=150, null=False)
 	
 	previsao_chegada = models.DateTimeField(null=False)
