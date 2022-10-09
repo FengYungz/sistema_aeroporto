@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.enums import Choices
 from django.utils import timezone
 import datetime
 
@@ -17,23 +18,28 @@ class Voo(models.Model):
 	
 	previsao_chegada = models.DateTimeField(null=False)
 	previsao_partida = models.DateTimeField(null=False)
-	
-	status = models.CharField(max_length=20)
-	
+
 	rota = models.CharField(max_length=200, null=False)
 
 	class Meta:
 		db_table = 'Voos'
 
-class estado_dinamico(models.Model):
+class Estado_Dinamico(models.Model):
+	STATUS = [
+		('EMB', 'Embarque'),
+		('PSO', 'Pouso'),
+		('DEC', 'Decolagem'),
+		('FIN', 'Finalizado'),
+		# adicionar mais estados aqui abaixo
+	]
 	id = models.BigAutoField(primary_key=True)
 
 	codigo = models.CharField(max_length=12, null=False, unique=True)
 
-	data_saida = models.DateTimeField(null=True)
-	data_chegada = models.DateTimeField(null=True)
+	data_saida = models.DateTimeField(blank=True)
+	data_chegada = models.DateTimeField(blank=True)
 	
-	status = models.CharField(max_length=20)
+	status = models.CharField(max_length=3,choices=STATUS,default = 'EMB')
 
 	class Meta:
 			db_table = 'estado_dinamico'
