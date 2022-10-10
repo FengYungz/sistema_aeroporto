@@ -13,7 +13,7 @@ import datetime
 class Voo(models.Model):
 	id = models.BigAutoField(primary_key=True)
 
-	codigo = models.CharField(max_length=12, null=False, unique=True)
+	codigo = models.CharField(max_length=12, null=False)
 	companhia = models.CharField(max_length=150, null=False)
 	
 	previsao_chegada = models.DateTimeField(null=False)
@@ -34,7 +34,7 @@ class Estado_Dinamico(models.Model):
 	]
 	id = models.BigAutoField(primary_key=True)
 
-	codigo = models.CharField(max_length=12, null=False, unique=True)
+	codigo = models.CharField(max_length=12, null=False)
 
 	data_saida = models.DateTimeField(blank=True)
 	data_chegada = models.DateTimeField(blank=True)
