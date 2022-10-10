@@ -115,3 +115,45 @@ python manage.py runserver
 "/FIRST"
 ```
 ## Pronto, Agora é só testar!
+
+---
+
+# Rodando Testes
+
+Navegue até
+
+```bash
+\sistema_aeroporto\webapp\MyProj
+```
+
+- Note que haverá um arquivo chamado ``` manage.py ```
+
+- Vamos criar do banco de dados a partir do modelo (migration)
+
+### Use
+
+```bash
+python manage.py makemigrations
+```
+
+---
+
+## Para criar o banco execute:
+
+```bash
+python manage.py migrate
+```
+
+---
+
+## Executando Testes:
+
+```bash
+python manage.py test
+```
+
+# Visualização do  Banco de dados
+
+- Utilize alguma extenção do VScode como SQlite ou algum programa como DBeaver e visualize suas tabelas.
+
+## Tudo certo? Até a próxima!
