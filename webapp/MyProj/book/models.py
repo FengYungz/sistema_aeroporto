@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.enums import Choices
 from django.utils import timezone
+import datetime
+
 
 #exemplo de instrucoes
 # Produto.objects.filter(idproduto=x)
@@ -8,41 +11,47 @@ from django.utils import timezone
 # Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
 
 class Voo(models.Model):
-	companhia = models.CharField(max_length=50)
-	codigo = models.PositiveIntegerField()
+	id = models.BigAutoField(primary_key=True)
+
+	codigo = models.CharField(max_length=12, null=False)
+	companhia = models.CharField(max_length=150, null=False)
 	
-	previsao_saida = models.DateTimeField()
-	previsao_chegada = models.DateTimeField()
+	previsao_chegada = models.DateTimeField(null=False)
+	previsao_partida = models.DateTimeField(null=False)
+
+	rota = models.CharField(max_length=200, null=False)
+
+	class Meta:
+		db_table = 'Voos'
+
+class Estado_Dinamico(models.Model):
+	STATUS = [
+		('EMB', 'Embarque'),
+		('PSO', 'Pouso'),
+		('DEC', 'Decolagem'),
+		('FIN', 'Finalizado'),
+		# adicionar mais estados aqui abaixo
+	]
+	id = models.BigAutoField(primary_key=True)
+
+	codigo = models.CharField(max_length=12, null=False)
+
+	data_saida = models.DateTimeField(blank=True)
+	data_chegada = models.DateTimeField(blank=True)
 	
-	real_saida = models.DateTimeField()
-	real_chegada = models.DateTimeField()
+	status = models.CharField(max_length=3,choices=STATUS,default = 'EMB')
 
-	rota = models.CharField(max_length=200)
-
-	aeroporto_chegada = models.CharField(max_length=200)
-	aeroporto_saida = models.CharField(max_length=200)
-	status = models.CharField(max_length=200)
-
-
-
-
-	def publish(self):
-		self.data = timezone.now()
-		self.save()
-
-	def __str__(self):
-		return self.nome
+	class Meta:
+			db_table = 'estado_dinamico'
 
 
 class Funcionario(models.Model):
+	id = models.BigAutoField(primary_key=True)
 	nome = models.CharField(max_length=200)
 	cpf = models.CharField(max_length=11)
 	cargo = models.CharField(max_length=200)
 
-	def publish(self):
-		self.save()
-
-	def __str__(self):
-		return self.nome
+	class Meta:
+		db_table = 'Funcionarios'
 
 
