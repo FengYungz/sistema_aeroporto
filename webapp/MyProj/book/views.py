@@ -9,6 +9,3 @@ def home(request):
 
 def cadastrar(request):
     return render(request,'cadastrar.html')
-
-def home(request):
-    return render(request,'home.html')
