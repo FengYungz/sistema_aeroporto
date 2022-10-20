@@ -1,21 +1,24 @@
 from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import Login
+from .models import Funcionario, Voo, Estado_Dinamico
 # Create your views here.
 def login(request):
+    form = Login()
+    context={'form':form}
     if request.method == "POST":
         form = Login(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             funcionario = get_object_or_404(Funcionario, cpf = post.cpf)
-            if(post.senha == post.funcionario.senha):
-                return redirect('home')
+            if(post.senha == funcionario.senha):
+                return redirect('home',funcionario.cargo)
             else:
                 return redirect('login')
     else:
-        form = CriaVenda()
+        form = Login()
         context={'form':form}
-    return render(request, 'login.html')
+    return render(request, 'login.html', context)
 
 def home(request):
     return render(request,'home.html')
