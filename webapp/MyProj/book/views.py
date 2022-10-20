@@ -27,10 +27,10 @@ def cadastrar(request):
     return render(request,'cadastrar.html')
 
 def central(request):
-    return render(request,'central.html')
+    return render(request, 'central.html')
 
 def monitorar(request):
-    return render(request,'monitorar.html')
+    return render(request, 'monitorar.html')
 
 def relatorio(request):
-    return render(request,'relatorio.html')
+    return render(request, 'relatorio.html')
