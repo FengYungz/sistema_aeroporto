@@ -47,6 +47,7 @@ class Estado_Dinamico(models.Model):
 
 class Funcionario(models.Model):
 	id = models.BigAutoField(primary_key=True)
+	senha = models.CharField(max_length=20)
 	nome = models.CharField(max_length=200)
 	cpf = models.CharField(max_length=11)
 	cargo = models.CharField(max_length=200)
