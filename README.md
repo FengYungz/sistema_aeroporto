@@ -109,12 +109,14 @@ dir
 python manage.py runserver
 ```
 
-- Note que será informado um endereço da aplicação, copie e cole no navegador e adiciona no final da URL
+- Note que será informado uma URL do endereço da aplicação 
 
+### Cole no navegador
 ```bash
-"/FIRST"
+http://127.0.0.1:8000/
+
 ```
-## Pronto, Agora é só testar!
+## Pronto, você será direcionado para página Home, agora é só testar!
 
 ---
 
