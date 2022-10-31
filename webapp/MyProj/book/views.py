@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
-from .forms import Login, CadastrarVoo
+from .forms import Login, CadastrarVoo, MonitorarVoo
 from django.utils import timezone
 from .models import Voo, Estado_Dinamico, Funcionario
 
@@ -46,10 +46,22 @@ def cadastrar(request):
 
 
 def central(request):
+    # Listagem ainda não implementada
     return render(request, 'central.html')
 
 def monitorar(request):
+    form = MonitorarVoo()
+    context={'form':form}
+    if request.method == "POST":
+        form = MonitorarVoo(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            voo_dinamico = get_object_or_404(Estado_Dinamico, codigo = post.codigo)
+            voo_dinamico = post
+            voo_dinamico.save()
+            return redirect('monitorar')
     return render(request, 'monitorar.html')
 
 def relatorio(request):
+    # Listagem ainda não implementada
     return render(request, 'relatorio.html')
