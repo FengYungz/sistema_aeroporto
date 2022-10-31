@@ -20,7 +20,8 @@ def login(request):
             funcionario = get_object_or_404(Funcionario, cpf = post.cpf)
             if(post.senha == funcionario.senha):
                 return redirect('home')
-                # return redirect('home',funcionario.cargo)
+                # quando o front estiver sendo feito:
+                # return redirect('home',funcionario.cargo) 
             else:
                 return redirect('login')
     else:
@@ -32,15 +33,17 @@ def home(request):
     return render(request,'home.html')
 
 def cadastrar(request):
-    novoVoo = get_object_or_404(Voo, pk=pkgutil)
+    form = CadastrarVoo(request.POST)
+    context={'form':form}
     if request.method == "POST":
-        form = CadastrarVoo(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.data = timezone.now()
             post.save()
-            novoVoo.save()
-    return render(request,'cadastrar.html')
+            return redirect('cadastrar')
+        else :
+            return ('cadastrar')
+    return render(request,'cadastrar.html',context)
+
 
 def central(request):
     return render(request, 'central.html')
