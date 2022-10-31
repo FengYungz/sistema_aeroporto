@@ -19,7 +19,8 @@ def login(request):
             post = form.save(commit=False)
             funcionario = get_object_or_404(Funcionario, cpf = post.cpf)
             if(post.senha == funcionario.senha):
-                return redirect('home',funcionario.cargo)
+                return redirect('home')
+                # return redirect('home',funcionario.cargo)
             else:
                 return redirect('login')
     else:
