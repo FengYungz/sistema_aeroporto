@@ -11,10 +11,18 @@ import datetime
 # Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
 
 class Voo(models.Model):
+	STATUS = [
+		('GOL', 'Gol'),
+		('TAM', 'TAM '),
+		('AVC', 'Avianca '),
+		('AZL', 'Azul '),
+		# adicionar mais estados aqui abaixo
+	]
+
 	id = models.BigAutoField(primary_key=True)
 
 	codigo = models.CharField(max_length=12, null=False)
-	companhia = models.CharField(max_length=150, null=False)
+	companhia = models.CharField(max_length=3,choices=STATUS, null=False)
 	
 	previsao_chegada = models.DateTimeField(null=False)
 	previsao_partida = models.DateTimeField(null=False)
@@ -47,6 +55,7 @@ class Estado_Dinamico(models.Model):
 
 class Funcionario(models.Model):
 	id = models.BigAutoField(primary_key=True)
+	senha  = models.CharField(max_length=20, null=False)
 	nome = models.CharField(max_length=200)
 	cpf = models.CharField(max_length=11)
 	cargo = models.CharField(max_length=200)
