@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500&display=swap'); /*Importando fonte do google fonts*/
+
+* { /*Tag global para definir fonte no site inteiro*/
+    font-family: 'Syne', sans-serif;
+}
+
+:root{
+    --fundo: #8257E5;
+    --branco: #ffffff;
+    --text: #4F4F4F;
+    --text2: #8257E5;
+}
