@@ -46,8 +46,10 @@ def cadastrar(request):
 
 
 def central(request):
-    # Listagem ainda não implementada
-    return render(request, 'central.html')
+    # Listagem ainda não implementada no front
+    voos=Voo.objects.all()
+    context={'voos':voos}
+    return render(request, 'central.html',context)
 
 def monitorar(request):
     form = MonitorarVoo()
@@ -63,5 +65,8 @@ def monitorar(request):
     return render(request, 'monitorar.html')
 
 def relatorio(request):
-    # Listagem ainda não implementada
-    return render(request, 'relatorio.html')
+    # Listagem ainda não implementada no front
+    voos=Voo.objects.all()
+    voos_dinamico = Estado_Dinamico.objects.all()
+    context={'voos':voos,'voos_dinamico':voos_dinamico}
+    return render(request, 'relatorio.html',context)
