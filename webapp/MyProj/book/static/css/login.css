@@ -53,3 +53,7 @@ input{
     width: 100%;
     height: 48px;
 }
+
+label {
+    display: none;
+}
