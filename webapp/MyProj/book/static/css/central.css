@@ -20,3 +20,9 @@ header {
     padding-top: 6.4rem;
     overflow: hidden;
 }
+
+.dados {
+    background-color: red;
+    display: flex;
+    align-items: center;
+}

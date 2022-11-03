@@ -30,11 +30,11 @@
     </header>
     <div class="dashboard">
         {% for voo in voos %}
-        <article class="post">
+        <div class="dados">
             <h2>{{ voo.voo.codigo }}</h2>
             <h2>{{ voo.voo.companhia }}</h2>
             <h2>{{ voo.status }}</h2>
-        </article>
+        </div>
         {% endfor %}
     </div>
     </div>
