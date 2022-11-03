@@ -47,7 +47,9 @@ def cadastrar(request):
 
 def central(request):
     # Listagem ainda não implementada no front
-    voos=Voo.objects.all()
+    filter = {}
+    # voos = Voo.objects.filter(filter)
+    voos = Estado_Dinamico.objects.select_related()
     context={'voos':voos}
     return render(request, 'central.html',context)
 

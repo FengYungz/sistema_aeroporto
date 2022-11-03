@@ -19,4 +19,4 @@ class MonitorarVoo(forms.ModelForm):
 
     class Meta:
         model = Estado_Dinamico
-        fields = ('codigo', 'data_saida', 'data_chegada', 'status')
+        fields = ('voo', 'data_saida', 'data_chegada', 'status')
