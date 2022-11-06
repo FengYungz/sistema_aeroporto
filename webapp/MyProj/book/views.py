@@ -39,9 +39,10 @@ def cadastrar(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            return redirect('cadastrar')
-        else :
-            return ('cadastrar')
+            estado = Estado_Dinamico.objects.create(voo = post , status= 'EMB', data_saida ='0001-01-01 00:00', data_chegada ='0001-01-01 01:01')
+            print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB')
+        return redirect('cadastrar')
+    print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
     return render(request,'cadastrar.html',context)
 
 
@@ -64,11 +65,12 @@ def monitorar(request):
             voo_dinamico = post
             voo_dinamico.save()
             return redirect('monitorar')
-    return render(request, 'monitorar.html')
+    return render(request, 'monitorar.html',context)
 
 def relatorio(request):
     # Listagem ainda não implementada no front
     voos=Voo.objects.all()
-    voos_dinamico = Estado_Dinamico.objects.all()
+    voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos':voos,'voos_dinamico':voos_dinamico}
     return render(request, 'relatorio.html',context)
+
