@@ -160,13 +160,13 @@ python manage.py test
 
 ---
 
-## Para iniciar o sistema de monitoramento:
+# Para iniciar o sistema de monitoramento:
 
 ```bash
  python manage.py runserver e cole no navegador o link apresentado (http://127.0.0.1:8000/)
 ```
 
-# Tela de login
+## Tela de login
 
 - Utilize "123" para usuário e "123" para senha para acessar o sistema
 ---
