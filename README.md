@@ -158,4 +158,17 @@ python manage.py test
 
 - Utilize alguma extenção do VScode como SQlite ou algum programa como DBeaver e visualize suas tabelas.
 
+---
+
+## Para iniciar o sistema de monitoramento:
+
+```bash
+ python manage.py runserver e cole no navegador o link apresentado (http://127.0.0.1:8000/)
+```
+
+# Tela de login
+
+- Utilize "123" para usuário e "123" para senha para acessar o sistema
+---
+
 ## Tudo certo? Até a próxima!
