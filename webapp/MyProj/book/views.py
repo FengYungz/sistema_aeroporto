@@ -10,31 +10,38 @@ from .models import Voo, Estado_Dinamico, Funcionario
 
 
 # Create your views here.
-def login(request, context = {}):
+def login(request):
     form = Login()
+    context={}
     if request.method == "POST":
         form = Login(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            try:
-                funcionario = Funcionario.objects.get(cpf = post.cpf)
-            except Funcionario.DoesNotExist:
-                funcionario = None
-            if funcionario is not None:
-                if(post.senha == funcionario.senha):
-                #     return redirect('home')
-                    # quando o front estiver sendo feito:
-                    context = {'permisao':funcionario.cargo}
-                    return render(request,'home.html',context)
-                else:
-                    context={'form':form, 'mensagem':'Senha incorreta'}
-                    return render(request, 'login.html', context)
+        if('tentativa' in context):
+            if(context['tentativa'] < 3):
+                if form.is_valid():
+                    post = form.save(commit=False)
+                    try:
+                        funcionario = Funcionario.objects.get(cpf = post.cpf)
+                    except Funcionario.DoesNotExist:
+                        funcionario = None
+                    if funcionario is not None:
+                        if(post.senha == funcionario.senha):
+                            context = {'permisao':funcionario.cargo}
+                            return render(request,'home.html',context)
+                        else:
+                            context={'form':form, 'mensagem':'Senha incorreta', 'tentativa' : context['tentativa'] + 1}
+                            return render(request, 'login.html', context)
+                    else:
+                        context={'form':form, 'mensagem':'Funcionario não cadastrado','tentativa' : context['tentativa'] + 1}
+                        return render(request, 'login.html', context)
             else:
-                context={'form':form, 'mensagem':'Funcionario não cadastrado'}
+                context={'form':form, 'mensagem':'Acesso Bloqueado'}
                 return render(request, 'login.html', context)
+        else:
+            context={'form':form,  'tentativa' : 0}
+            return render(request, 'login.html', context)
     else:
         form = Login()
-        context={'form':form}
+        context={'form':form,  'tentativa' : 0}
     return render(request, 'login.html', context)
 
 def home(request, context = {'permisao':'Negada'}):

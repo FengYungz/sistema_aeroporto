@@ -17,6 +17,8 @@
             Hi {{ user.username }}!
             {% else %}
             <h1>{{mensagem}}</h1>
+            {% if 3 == tentativa %}
+            {% else %}
             <form method="post">
                 <h1 class="titulo">Entrar</h1>
                 {% csrf_token %}
@@ -24,6 +26,7 @@
                 <span>Esqueci minha senha</span>
                 <button type="submit">Entrar</button>
             </form>
+            {% endif %}
         {% endif %}
     </div>
 </body>
