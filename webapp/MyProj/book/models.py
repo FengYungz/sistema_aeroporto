@@ -33,6 +33,12 @@ class Voo(models.Model):
 		db_table = 'Voos'
 
 class Estado_Dinamico(models.Model):
+	voo = models.OneToOneField(
+        Voo,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
 	STATUS = [
 		('EMB', 'Embarque'),
 		('PSO', 'Pouso'),
@@ -40,9 +46,6 @@ class Estado_Dinamico(models.Model):
 		('FIN', 'Finalizado'),
 		# adicionar mais estados aqui abaixo
 	]
-	id = models.BigAutoField(primary_key=True)
-
-	codigo = models.CharField(max_length=12, null=False)
 
 	data_saida = models.DateTimeField(blank=True)
 	data_chegada = models.DateTimeField(blank=True)

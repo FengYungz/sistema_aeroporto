@@ -21,7 +21,7 @@ def login(request):
             if(post.senha == funcionario.senha):
                 return redirect('home')
                 # quando o front estiver sendo feito:
-                # return redirect('home',funcionario.cargo) 
+                # return redirect('home',{'permisao':funcionario.cargo}) 
             else:
                 return redirect('login')
     else:
@@ -39,21 +39,23 @@ def cadastrar(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            return redirect('cadastrar')
-        else :
-            return ('cadastrar')
+            estado = Estado_Dinamico.objects.create(voo = post , status= 'EMB', data_saida ='0001-01-01 00:00', data_chegada ='0001-01-01 01:01')
+        return redirect('cadastrar')
     return render(request,'cadastrar.html',context)
 
 
 def central(request):
     # Listagem ainda não implementada no front
+    filter = {}
     voos=Voo.objects.all()
-    context={'voos':voos}
+    voos_dinamico = Estado_Dinamico.objects.select_related()
+    context={'voos':voos,'voos_dinamico':voos_dinamico}
     return render(request, 'central.html',context)
 
 def monitorar(request):
     form = MonitorarVoo()
-    context={'form':form}
+    voos = Estado_Dinamico.objects.select_related()
+    context={'form':form,'voos':voos}
     if request.method == "POST":
         form = MonitorarVoo(request.POST)
         if form.is_valid():
@@ -62,11 +64,33 @@ def monitorar(request):
             voo_dinamico = post
             voo_dinamico.save()
             return redirect('monitorar')
-    return render(request, 'monitorar.html')
+    return render(request, 'monitorar.html',context)
 
 def relatorio(request):
     # Listagem ainda não implementada no front
     voos=Voo.objects.all()
-    voos_dinamico = Estado_Dinamico.objects.all()
+    voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos':voos,'voos_dinamico':voos_dinamico}
     return render(request, 'relatorio.html',context)
+
+
+
+# funcoes adicionais
+def deletar(request):
+    voos_del = request.POST['codigos']
+    voos_del = voos_del.split(",")
+    voos = Voo.objects.filter(codigo = voos_del)
+    voos.delete()
+    return redirect('central')
+
+
+def editar_voo(request):
+    form = CadastrarVoo(request.POST)
+    voo_edit = request.POST['codigos']
+    post = Voo.objects.filter(codigo = voo_edit)
+    context={'form':form}
+    if request.method == "POST":
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+    return redirect('central')

@@ -1,0 +1,69 @@
+* {
+    margin: 0;
+}
+
+header {
+    background-color: var(--fundo);
+    width: 100%;
+    height: 290px;
+}
+
+.page {
+    background-color: var(--branco);
+}
+
+.dashboard {
+    background-color: #EDEDED;
+    max-width: 40rem;
+    border-radius: 0.8rem;
+    margin: -3.2rem auto 3.2rem;
+    padding: 0 6.4rem;
+    overflow: hidden;
+    padding-top: 6.4rem
+}
+
+li{
+    list-style-type: none;
+    display: none;
+}
+
+input {
+    width: 100%;
+    height: 2.6rem;
+    margin-top: 0.8rem;
+    border-radius: 0.4rem;
+    background: var(--branco);
+    outline: 0;
+    padding: 4px;
+    border: 0;
+    margin-bottom: 20px;
+}
+
+select {
+    width: 100%;
+    height: 2.6rem;
+    margin-top: 0.8rem;
+    border-radius: 0.8rem;
+    background: var(--branco);
+    outline: 0;
+    padding: 4px;
+    font: 1.6rem Archivo;
+    border: 0;
+    margin-bottom: 20px;
+}
+
+label {
+
+}
+
+button {
+    border: 0;
+    margin-top: 16px;
+    background-color: var(--fundo);
+    border-radius: 4px;
+    width: 100%;
+    height: 48px;
+    cursor: pointer;
+    color: var(--branco);
+    margin-bottom: 30px;
+}

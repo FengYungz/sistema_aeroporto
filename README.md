@@ -158,4 +158,29 @@ python manage.py test
 
 - Utilize alguma extenção do VScode como SQlite ou algum programa como DBeaver e visualize suas tabelas.
 
+---
+
+# Para iniciar o sistema de monitoramento:
+
+```bash
+ Use "python manage.py runserver" e cole no navegador o link apresentado (http://127.0.0.1:8000/)
+```
+
+## Tela de login
+
+- Utilize "123" para usuário e "123" para senha para acessar o sistema
+
+## Tela Home
+
+- Na tela principal (home), acesse a opção de cadastrar voo
+---
+
+## Tela de cadastro
+
+- Na tela do cadastro, preencha as lacunas com as informações do voo e confirme
+
+## Cadastro realizado com sucesso
+
+---
+
 ## Tudo certo? Até a próxima!

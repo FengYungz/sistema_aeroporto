@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+}
+
+header {
+    background-color: var(--fundo);
+    width: 100%;
+    height: 290px;
+}
+
+.page {
+    background-color: var(--branco);
+}
+
+.dashboard {
+    background-color: #EDEDED;
+    max-width: 40rem;
+    border-radius: 0.8rem;
+    margin: -3.2rem auto 3.2rem;
+    padding-top: 6.4rem;
+    overflow: hidden;
+}
