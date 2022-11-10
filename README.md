@@ -116,6 +116,8 @@ python manage.py runserver
 http://127.0.0.1:8000/
 
 ```
+## Pronto, você será direcionado para página Home, agora é só testar!
+
 ---
 
 # Para iniciar o sistema de monitoramento:
@@ -134,11 +136,6 @@ http://127.0.0.1:8000/
 - Na tela do cadastro, preencha as lacunas com as informações do voo e confirme
 
 ## Cadastro realizado com sucesso
-
----
-## Pronto, você será direcionado para página Home, agora é só testar!
-
----
 
 # Rodando Testes
 
