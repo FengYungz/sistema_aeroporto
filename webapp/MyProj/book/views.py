@@ -24,8 +24,8 @@ def login(request, context = {}):
                 if(post.senha == funcionario.senha):
                 #     return redirect('home')
                     # quando o front estiver sendo feito:
-                    permisao = {'permisao':funcionario.cargo}
-                    return render(request,'home.html',permisao)
+                    context = {'permisao':funcionario.cargo}
+                    return render(request,'home.html',context)
                 else:
                     context={'form':form, 'mensagem':'Senha incorreta'}
                     return render(request, 'login.html', context)
@@ -37,7 +37,9 @@ def login(request, context = {}):
         context={'form':form}
     return render(request, 'login.html', context)
 
-def home(request, permisao):
+def home(request, context = {'permisao':'Negada'}):
+    voos_dinamico = Estado_Dinamico.objects.select_related()
+    context={'voos_dinamico':voos_dinamico}
     return render(request,'home.html',permisao)
 
 def cadastrar(request):
@@ -55,7 +57,6 @@ def cadastrar(request):
 def central(request):
     # Listagem ainda não implementada no front
     filter = {}
-    voos=Voo.objects.all()
     voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos':voos,'voos_dinamico':voos_dinamico}
     return render(request, 'central.html',context)

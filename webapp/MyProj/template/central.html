@@ -29,11 +29,11 @@
             <h1>Listar Voos</h1>
     </header>
     <div class="dashboard">
-        {% for voo in voos %}
+        {% for voo_dinamico in voos_dinamico %}
         <div class="dados">
-            <h2>{{ voo.voo.codigo }}</h2>
-            <h2>{{ voo.voo.companhia }}</h2>
-            <h2>{{ voo.status }}</h2>
+            <h2>{{ voo_dinamico.voo.codigo }}</h2>
+            <h2>{{ voo_dinamico.voo.companhia }}</h2>
+            <h2>{{ voo_dinamico.status }}</h2>
         </div>
         {% endfor %}
     </div>
