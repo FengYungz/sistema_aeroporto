@@ -116,7 +116,7 @@ python manage.py runserver
 http://127.0.0.1:8000/
 
 ```
-## Pronto, você será direcionado para página Home, agora é só testar!
+## Pronto, você será direcionado para página Login, agora é só testar!
 
 ---
 
