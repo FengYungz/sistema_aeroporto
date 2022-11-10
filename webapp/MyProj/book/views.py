@@ -10,27 +10,35 @@ from .models import Voo, Estado_Dinamico, Funcionario
 
 
 # Create your views here.
-def login(request):
+def login(request, context = {}):
     form = Login()
-    context={'form':form}
     if request.method == "POST":
         form = Login(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            funcionario = get_object_or_404(Funcionario, cpf = post.cpf)
-            if(post.senha == funcionario.senha):
-                return redirect('home')
-                # quando o front estiver sendo feito:
-                # return redirect('home',{'permisao':funcionario.cargo}) 
+            try:
+                funcionario = Funcionario.objects.get(cpf = post.cpf)
+            except Funcionario.DoesNotExist:
+                funcionario = None
+            if funcionario is not None:
+                if(post.senha == funcionario.senha):
+                #     return redirect('home')
+                    # quando o front estiver sendo feito:
+                    permisao = {'permisao':funcionario.cargo}
+                    return render(request,'home.html',permisao)
+                else:
+                    context={'form':form, 'mensagem':'Senha incorreta'}
+                    return render(request, 'login.html', context)
             else:
-                return redirect('login')
+                context={'form':form, 'mensagem':'Funcionario não cadastrado'}
+                return render(request, 'login.html', context)
     else:
         form = Login()
         context={'form':form}
     return render(request, 'login.html', context)
 
-def home(request):
-    return render(request,'home.html')
+def home(request, permisao):
+    return render(request,'home.html',permisao)
 
 def cadastrar(request):
     form = CadastrarVoo(request.POST)

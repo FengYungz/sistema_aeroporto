@@ -16,6 +16,7 @@
         {% if user.is_authenticated %}
             Hi {{ user.username }}!
             {% else %}
+            <h1>{{mensagem}}</h1>
             <form method="post">
                 <h1 class="titulo">Entrar</h1>
                 {% csrf_token %}
