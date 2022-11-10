@@ -40,6 +40,7 @@ def login(request, context = {}):
 def home(request, context = {'permisao':'Negada'}):
     voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos_dinamico':voos_dinamico}
+    
     return render(request,'home.html',permisao)
 
 def cadastrar(request):
