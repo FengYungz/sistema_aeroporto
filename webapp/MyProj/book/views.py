@@ -1,5 +1,9 @@
+import csv
+import dbm
 from multiprocessing import context
 import pkgutil
+import sqlite3
+from turtle import pd
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -8,40 +12,39 @@ from .forms import Login, CadastrarVoo, MonitorarVoo
 from django.utils import timezone
 from .models import Voo, Estado_Dinamico, Funcionario
 
+from django.http import HttpResponse
+
+import xlwt
+
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+
 
 # Create your views here.
-def login(request, context = {}):
+def login(request):
     form = Login()
+    context={'form':form}
     if request.method == "POST":
         form = Login(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            try:
-                funcionario = Funcionario.objects.get(cpf = post.cpf)
-            except Funcionario.DoesNotExist:
-                funcionario = None
-            if funcionario is not None:
-                if(post.senha == funcionario.senha):
-                #     return redirect('home')
-                    # quando o front estiver sendo feito:
-                    context = {'permisao':funcionario.cargo}
-                    return render(request,'home.html',context)
-                else:
-                    context={'form':form, 'mensagem':'Senha incorreta'}
-                    return render(request, 'login.html', context)
+            funcionario = get_object_or_404(Funcionario, cpf = post.cpf)
+            if(post.senha == funcionario.senha):
+                return redirect('home')
+                # quando o front estiver sendo feito:
+                # return redirect('home',{'permisao':funcionario.cargo}) 
             else:
-                context={'form':form, 'mensagem':'Funcionario não cadastrado'}
-                return render(request, 'login.html', context)
+                return redirect('login')
     else:
         form = Login()
         context={'form':form}
     return render(request, 'login.html', context)
 
-def home(request, context = {'permisao':'Negada'}):
-    voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos_dinamico':voos_dinamico}
-    
-    return render(request,'home.html',permisao)
+def home(request):
+    #EstadoDinamicoLista = Estado_Dinamico.objects.get
+    all_entries = Estado_Dinamico.objects.all()
+       
+    return render(request,'home.html')
 
 def cadastrar(request):
     form = CadastrarVoo(request.POST)
@@ -58,6 +61,7 @@ def cadastrar(request):
 def central(request):
     # Listagem ainda não implementada no front
     filter = {}
+    voos=Voo.objects.all()
     voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos':voos,'voos_dinamico':voos_dinamico}
     return render(request, 'central.html',context)
@@ -86,12 +90,12 @@ def relatorio(request):
 
 
 # funcoes adicionais
-def deletar(request):
-    voos_del = request.POST['codigos']
-    voos_del = voos_del.split(",")
-    voos = Voo.objects.filter(codigo = voos_del)
-    voos.delete()
-    return redirect('central')
+#def deletar(request):
+#    voos_del = request.POST['codigos']
+#    voos_del = voos_del.split(",")
+#    voos = Voo.objects.filter(codigo = voos_del)
+#    voos.delete()
+#    return redirect('central')
 
 
 def editar_voo(request):
@@ -104,3 +108,21 @@ def editar_voo(request):
             post = form.save(commit=False)
             post.save()
     return redirect('central')
+
+def relatorio(request):
+    response = HttpResponse(content_type='text.pdf')
+    response['Content-Disposition'] = 'attachment; filename="voos.pdf"'
+
+    writer = csv.writer(response)
+    writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
+
+    voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
+    for user in voos_cadastrados:
+        writer.writerow(user)
+
+    return response
+
+    
+
+
+

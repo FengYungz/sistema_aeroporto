@@ -26,7 +26,12 @@
                 </div>
             <h1>Gerar Relatório</h1>
         </header>
-        <div class="dashboard">DADOS
+        <div class="dashboard">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Gerar Relatório</button>
+            </form>
             <h2><a href="{% url 'login' %}">{Voltar para Login}</a></h2>
         </div>
     </div>
