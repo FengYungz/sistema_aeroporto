@@ -116,6 +116,26 @@ python manage.py runserver
 http://127.0.0.1:8000/
 
 ```
+---
+
+# Para iniciar o sistema de monitoramento:
+
+## Tela de login
+
+- Utilize "123" para usuário e "123" para senha para acessar o sistema
+
+## Tela Home
+
+- Na tela principal (home), acesse a opção de cadastrar voo
+---
+
+## Tela de cadastro
+
+- Na tela do cadastro, preencha as lacunas com as informações do voo e confirme
+
+## Cadastro realizado com sucesso
+
+---
 ## Pronto, você será direcionado para página Home, agora é só testar!
 
 ---
