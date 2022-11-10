@@ -40,11 +40,19 @@ def login(request):
         context={'form':form}
     return render(request, 'login.html', context)
 
+<<<<<<< HEAD
 def home(request):
     #EstadoDinamicoLista = Estado_Dinamico.objects.get
     all_entries = Estado_Dinamico.objects.all()
        
     return render(request,'home.html')
+=======
+def home(request, context = {'permisao':'Negada'}):
+    voos_dinamico = Estado_Dinamico.objects.select_related()
+    context={'voos_dinamico':voos_dinamico}
+    
+    return render(request,'home.html',context)
+>>>>>>> d94fc791a9832d159d6c9b9b1600ae577d6bbe25
 
 def cadastrar(request):
     form = CadastrarVoo(request.POST)
@@ -63,7 +71,7 @@ def central(request):
     filter = {}
     voos=Voo.objects.all()
     voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos':voos,'voos_dinamico':voos_dinamico}
+    context={'voos_dinamico':voos_dinamico}
     return render(request, 'central.html',context)
 
 def monitorar(request):
