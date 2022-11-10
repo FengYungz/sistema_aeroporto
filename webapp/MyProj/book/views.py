@@ -41,7 +41,7 @@ def home(request, context = {'permisao':'Negada'}):
     voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos_dinamico':voos_dinamico}
     
-    return render(request,'home.html',permisao)
+    return render(request,'home.html',context)
 
 def cadastrar(request):
     form = CadastrarVoo(request.POST)
@@ -59,7 +59,7 @@ def central(request):
     # Listagem ainda não implementada no front
     filter = {}
     voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos':voos,'voos_dinamico':voos_dinamico}
+    context={'voos_dinamico':voos_dinamico}
     return render(request, 'central.html',context)
 
 def monitorar(request):
