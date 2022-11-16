@@ -13,29 +13,47 @@ from django.utils import timezone
 from .models import Voo, Estado_Dinamico, Funcionario
 
 from django.http import HttpResponse
-
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
 
 # Create your views here.
-def login(request):
+def login(request, context = {}):
     form = Login()
-    context={'form':form}
+    
+    if 'tentativas' in request.session:
+        tentativas = request.session['tentativas']
+        request.session['tentativas'] = tentativas + 1
+    else:
+        request.session['tentativas'] = 0
+
+    print(request.session['tentativas'])
+
     if request.method == "POST":
-        form = Login(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            funcionario = get_object_or_404(Funcionario, cpf = post.cpf)
-            if(post.senha == funcionario.senha):
-                return redirect('home')
-                # quando o front estiver sendo feito:
-                # return redirect('home',{'permisao':funcionario.cargo}) 
-            else:
-                return redirect('login')
+        if tentativas < 3:
+            form = Login(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)
+                try:
+                    funcionario = Funcionario.objects.get(cpf = post.cpf)
+                except Funcionario.DoesNotExist:
+                    funcionario = None
+                if funcionario is not None:
+                    if(post.senha == funcionario.senha):
+                        context = {'permisao':funcionario.cargo}
+                        return render(request,'home.html',context)
+                    else:
+                        context={'form':form, 'mensagem':'Senha incorreta','estado':200}
+                        return render(request, 'login.html', context)
+                else:
+                    context={'form':form, 'mensagem':'Funcionario não cadastrado','estado':200}
+                    return render(request, 'login.html', context)
+        else:
+            context={'form':form, 'mensagem':'Tentativas exedidas', 'estado':400}
+            return render(request, 'login.html', context)
     else:
         form = Login()
-        context={'form':form}
+        context={'form':form,'estado':200}
     return render(request, 'login.html', context)
 
 
