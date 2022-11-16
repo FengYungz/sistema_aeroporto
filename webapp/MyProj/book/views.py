@@ -14,8 +14,6 @@ from .models import Voo, Estado_Dinamico, Funcionario
 
 from django.http import HttpResponse
 
-import xlwt
-
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
@@ -106,19 +104,17 @@ def editar_voo(request):
     return redirect('central')
 
 def relatorio(request):
-    response = HttpResponse(content_type='text.pdf')
-    response['Content-Disposition'] = 'attachment; filename="voos.pdf"'
-
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="voos.csv"'
+ 
     writer = csv.writer(response)
     writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
-
+ 
     voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
     for user in voos_cadastrados:
         writer.writerow(user)
-
+ 
     return response
-
-    
 
 
 
