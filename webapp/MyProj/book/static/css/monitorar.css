@@ -17,7 +17,7 @@ header {
     max-width: 40rem;
     border-radius: 0.8rem;
     margin: -3.2rem auto 3.2rem;
-    padding-top: 6.4rem;
+    padding: 6.4rem;
     overflow: hidden;
 }
 
@@ -56,8 +56,49 @@ li{
     font-size: 15px;
 }
 
-a img{
+a img {
     height: 25px;
     width: 25px;
     margin-top: 10px;
+}
+
+input {
+    width: 100%;
+    height: 2.6rem;
+    margin-top: 0.8rem;
+    border-radius: 0.4rem;
+    background: var(--branco);
+    outline: 0;
+    padding: 4px;
+    border: 0;
+    margin-bottom: 20px;
+}
+
+select {
+    width: 100%;
+    height: 2.6rem;
+    margin-top: 0.8rem;
+    border-radius: 0.8rem;
+    background: var(--branco);
+    outline: 0;
+    padding: 4px;
+    font: 1.6rem Archivo;
+    border: 0;
+    margin-bottom: 20px;
+}
+
+label {
+
+}
+
+button {
+    border: 0;
+    margin-top: 16px;
+    background-color: var(--fundo);
+    border-radius: 4px;
+    width: 100%;
+    height: 48px;
+    cursor: pointer;
+    color: var(--branco);
+    margin-bottom: 30px;
 }
