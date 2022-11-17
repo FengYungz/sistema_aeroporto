@@ -66,5 +66,3 @@ class Funcionario(models.Model):
 
 	class Meta:
 		db_table = 'Funcionarios'
-
-

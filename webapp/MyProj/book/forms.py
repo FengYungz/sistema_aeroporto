@@ -13,7 +13,7 @@ class CadastrarVoo(forms.ModelForm):
 
     class Meta:
         model = Voo
-        fields = ('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
+        fields = ( 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
 
 class MonitorarVoo(forms.ModelForm):
 
