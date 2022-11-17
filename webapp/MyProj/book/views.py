@@ -3,7 +3,6 @@ import dbm
 from multiprocessing import context
 import pkgutil
 import sqlite3
-from turtle import pd
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -13,11 +12,6 @@ from django.utils import timezone
 from .models import Voo, Estado_Dinamico, Funcionario
 
 from django.http import HttpResponse
-
-import xlwt
-
-from django.http import HttpResponse
-from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -40,19 +34,18 @@ def login(request):
         context={'form':form}
     return render(request, 'login.html', context)
 
-<<<<<<< HEAD
 def home(request):
     #EstadoDinamicoLista = Estado_Dinamico.objects.get
     all_entries = Estado_Dinamico.objects.all()
        
     return render(request,'home.html')
-=======
+
 def home(request, context = {'permisao':'Negada'}):
     voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos_dinamico':voos_dinamico}
     
     return render(request,'home.html',context)
->>>>>>> d94fc791a9832d159d6c9b9b1600ae577d6bbe25
+
 
 def cadastrar(request):
     form = CadastrarVoo(request.POST)
@@ -118,19 +111,15 @@ def editar_voo(request):
     return redirect('central')
 
 def relatorio(request):
-    response = HttpResponse(content_type='text.pdf')
-    response['Content-Disposition'] = 'attachment; filename="voos.pdf"'
-
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="voos.csv"'
+ 
     writer = csv.writer(response)
     writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
-
+ 
     voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
     for user in voos_cadastrados:
         writer.writerow(user)
 
+   
     return response
-
-    
-
-
-
