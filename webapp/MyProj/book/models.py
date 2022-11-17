@@ -21,7 +21,7 @@ class Voo(models.Model):
 
 	id = models.BigAutoField(primary_key=True)
 
-	codigo = models.CharField(max_length=12, null=False)
+	codigo = models.CharField(max_length=12, null=False,unique = True)
 	companhia = models.CharField(max_length=3,choices=STATUS, null=False)
 	
 	previsao_chegada = models.DateTimeField(null=False)
