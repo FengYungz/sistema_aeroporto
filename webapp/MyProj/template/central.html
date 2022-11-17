@@ -29,15 +29,15 @@
             </div>
     </header>
     <div class="dashboard">
-        <h1>Listar Voos</h1>
         {% if estado == 'edicao' %}
         <form method="post">
-            <h1 class="titulo">Editar</h1>
+            <h1 class="titulo">Editar voo {{mensagem}}</h1>
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Editar</button>
         </form>
         {% else %}
+        <h1>Listar Voos</h1>
         <form method="GET">
             {{ filter.form.as_p }}
             <input type="submit" />

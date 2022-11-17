@@ -10,11 +10,11 @@ from django.urls import reverse
 from django.utils import timezone
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from fpdf import FPDF
-from reportlab.pdfgen import canvas
+
+# from reportlab.pdfgen import canvas
 from django.http import FileResponse
 
-from .forms import Login, CadastrarVoo, MonitorarVoo
+from .forms import Login, CadastrarVoo, MonitorarVoo,EditarVoo
 from .models import Voo, Estado_Dinamico, Funcionario
 from .filters import FiltroCentral, FiltroMonitorar
 
@@ -63,7 +63,7 @@ def edit(request,id):
     request.session['tentativas'] = 0
 
     voo = Voo.objects.get(id = id)
-    form = CadastrarVoo(instance=voo)
+    form = EditarVoo(instance=voo)
     voos_dinamico = Estado_Dinamico.objects.select_related()
     
     if request.method == "POST":
@@ -76,10 +76,10 @@ def edit(request,id):
             post.save()
             return redirect('central')
 
-        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'mensagem': voo.codigo}
         return render(request,'central.html',context)
 
-    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'mensagem': voo.codigo}
     return render(request,'central.html',context)
 
 def deletar(request,id):
