@@ -15,8 +15,9 @@
     {% block content %}
         <header>
             <div class="content">
+                <a class="voltar" href="{% url 'home' %}"><img src="{% static 'images/back.svg' %}" alt=""></a>
                 <div class="column-left">
-                  <a href="{% url 'home' %}">MENU DE OPCOES</a>
+                  <a href="{% url 'home' %}">AERO SISTEM</a>
                   <ul class="menu">
                     <li><a href="{% url 'cadastrar' %}">Cadastrar</a></li>
                     <li><a href="{% url 'central' %}">Listar Voos</a></li>
@@ -24,9 +25,9 @@
                     <li><a href="{% url 'relatorio' %}">Gerar Relatório</a></li>
                   </ul>
                 </div>
-            <h1>Cadastrar Voo</h1>
         </header>
         <div class="dashboard">
+            <h1>Cadastrar Voo</h1>
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}

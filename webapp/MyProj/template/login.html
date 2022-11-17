@@ -17,13 +17,16 @@
             Hi {{ user.username }}!
             {% else %}
             <h1>{{mensagem}}</h1>
-            <form method="post">
-                <h1 class="titulo">Entrar</h1>
-                {% csrf_token %}
-                {{ form.as_p }}
-                <span>Esqueci minha senha</span>
-                <button type="submit">Entrar</button>
-            </form>
+            {% if estado == 400 %}
+                {% else %}
+                <form method="post">
+                    <h1 class="titulo">Entrar</h1>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <span>Esqueci minha senha</span>
+                    <button type="submit">Entrar</button>
+                </form>
+            {% endif %}
         {% endif %}
     </div>
 </body>

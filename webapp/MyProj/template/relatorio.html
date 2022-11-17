@@ -15,8 +15,9 @@
     {% block content %}
         <header>
             <div class="content">
+                <a class="voltar" href="{% url 'home' %}"><img src="{% static 'images/back.svg' %}" alt=""></a>
                 <div class="column-left">
-                  <a href="{% url 'home' %}">MENU DE OPCOES</a>
+                  <a href="{% url 'home' %}">AERO SISTEM</a>
                   <ul class="menu">
                     <li><a href="{% url 'cadastrar' %}">Cadastrar</a></li>
                     <li><a href="{% url 'central' %}">Listar Voos</a></li>
@@ -24,14 +25,13 @@
                     <li><a href="{% url 'relatorio' %}">Gerar Relatório</a></li>
                   </ul>
                 </div>
-            <h1>Gerar Relatório</h1>
         </header>
         <div class="dashboard">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Gerar Relatório</button>
-            </form>
+            <h1>Tipos de Relatórios</h1>
+            <h1><a href="{% url 'relatorio1' %}">Relatorio Tipo 1 :</a></h1>
+            <h2>Esplicar o tipo 1 aqui</h2>
+            <h1><a href="{% url 'relatorio2' %}">Relatorio Tipo 2 :</a></h1>
+            <h2>Esplicar o tipo 2 aqui</h2>
             <h2><a href="{% url 'login' %}">{Voltar para Login}</a></h2>
         </div>
     </div>
