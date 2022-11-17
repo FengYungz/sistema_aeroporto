@@ -25,11 +25,11 @@
                     <li><a href="{% url 'central' %}">Listar Voos</a></li>
                     <li><a href="{% url 'monitorar' %}">Monitorar</a></li>
                     <li><a href="{% url 'relatorio' %}">Gerar Relatório</a></li>
-                </ul>
-            </div>
-            <h1>Monitorar Voo</h1>
+                  </ul>
+                </div>
     </header>
     <div class="dashboard">
+        <h1>Monitorar Voo</h1>
         {% if estado == 'edicao' %}
         <form method="post">
             <h1 class="titulo">Editar</h1>
