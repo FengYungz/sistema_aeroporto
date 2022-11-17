@@ -68,6 +68,11 @@ button {
     margin-bottom: 30px;
 }
 
+button:hover{
+    background-color: red;
+    transition: 0.4s;
+}
+
 .content{
     display: flex;
     justify-content: center;

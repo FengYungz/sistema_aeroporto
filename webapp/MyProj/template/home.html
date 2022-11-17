@@ -27,34 +27,35 @@
                 </div>
         </header>
         <div class="dashboard">
+            <h1>DASHBOARD</h1>
             {% for voo in voos_dinamico %}
-        <div class="dashboard">
-            <thead>
-                <tr>
-                    <th>Companhia Aérea:</th>
-                    <th>{{ voo.voo.companhia }}</th>
-                </tr>
-                <tr>
-                    <th>Código:</th>
-                    <th>{{ voo.voo.codigo}}</th>
-                </tr>
-                <tr>
-                    <th>Descrição:</th>
-                    <th>{{ voo.voo.rota }}</th>
-                </tr>
-                <tr>
-                    <th>Status:</th>
-                    <th>{{ voo.status }}</th>
-                </tr>
-                <tr>
-                    <th>Horário Partida:</th>
-                    <th>{{ voo.voo.previsao_partida }}</th>
-                </tr>
-                <tr>
-                    <th>Horário Chegada:</th>
-                    <th>{{ voo.voo.previsao_chegada }}</th>
-                </tr>
-            </thead>
+        <div>
+            <div class="box">
+                <div class="item">
+                    <li>Companhia Aérea: {{ voo.voo.companhia }}</li>
+                </div>
+
+                <div class="item">
+                    <li>Código: {{ voo.voo.codigo}}</li>
+                </div>
+
+                <div class="item">
+                    <li>Descrição: {{ voo.voo.rota }}</li>
+                </div>
+
+                <div class="item">
+                    <li>Status: {{ voo.status }}</li>
+                </div>
+
+                <div class="item">
+                    <li>Horário Partida: {{ voo.voo.previsao_partida }}</li>
+                </div>
+
+                <div class="item">
+                    <li>Horário Chegada: {{ voo.voo.previsao_chegada }}</li>
+                </div>
+
+            </div>
         </div>
     {% endfor %}
     {% endblock %}
