@@ -1,107 +1,160 @@
-from multiprocessing import context
+import csv
+import dbm
 import pkgutil
-from django.shortcuts import render
-from django.shortcuts import redirect
+import sqlite3
+
+from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
-from django.shortcuts import render, get_object_or_404
-from .forms import Login, CadastrarVoo, MonitorarVoo
 from django.utils import timezone
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+
+from .forms import Login, CadastrarVoo, MonitorarVoo
 from .models import Voo, Estado_Dinamico, Funcionario
+from .filters import FiltroCentral, FiltroMonitorar
 
-
-# Create your views here.
-def login(request):
+def login(request, context = {}):
     form = Login()
     context={}
+    
+    if 'tentativas' in request.session:
+        tentativas = request.session['tentativas']
+        request.session['tentativas'] = tentativas + 1
+    else:
+        request.session['tentativas'] = 0
+
+    print(request.session['tentativas'])
+
     if request.method == "POST":
-        form = Login(request.POST)
-        if('tentativa' in context):
-            if(context['tentativa'] < 3):
-                if form.is_valid():
-                    post = form.save(commit=False)
-                    try:
-                        funcionario = Funcionario.objects.get(cpf = post.cpf)
-                    except Funcionario.DoesNotExist:
-                        funcionario = None
-                    if funcionario is not None:
-                        if(post.senha == funcionario.senha):
-                            context = {'permisao':funcionario.cargo}
-                            return render(request,'home.html',context)
-                        else:
-                            context={'form':form, 'mensagem':'Senha incorreta', 'tentativa' : context['tentativa'] + 1}
-                            return render(request, 'login.html', context)
+        if tentativas < 3:
+            form = Login(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)
+                try:
+                    funcionario = Funcionario.objects.get(cpf = post.cpf)
+                except Funcionario.DoesNotExist:
+                    funcionario = None
+                if funcionario is not None:
+                    if(post.senha == funcionario.senha):
+                        request.session['tentativas'] = 0
+                        request.session['permisao'] = funcionario.cargo
+                        print(request.session['permisao'])
+                        return redirect('home')
                     else:
-                        context={'form':form, 'mensagem':'Funcionario não cadastrado','tentativa' : context['tentativa'] + 1}
+                        context={'form':form, 'mensagem':'Senha incorreta','estado':200}
                         return render(request, 'login.html', context)
-            else:
-                context={'form':form, 'mensagem':'Acesso Bloqueado'}
-                return render(request, 'login.html', context)
+                else:
+                    context={'form':form, 'mensagem':'Funcionario não cadastrado','estado':200}
+                    return render(request, 'login.html', context)
         else:
-            context={'form':form,  'tentativa' : 0}
+            context={'form':form, 'mensagem':'Tentativas exedidas', 'estado':400}
             return render(request, 'login.html', context)
     else:
         form = Login()
-        context={'form':form,  'tentativa' : 0}
+        context={'form':form,'estado':200}
     return render(request, 'login.html', context)
 
+def edit(request,id):
+    request.session['tentativas'] = 0
+
+    voo = Voo.objects.get(id = id)
+    form = CadastrarVoo(instance=voo)
+    voos_dinamico = Estado_Dinamico.objects.select_related()
+    
+    if request.method == "POST":
+        form = CadastrarVoo(request.POST,instance=voo)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('central')
+
+        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+        return render(request,'central.html',context)
+
+    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+    return render(request,'central.html',context)
+
+def deletar(request,id):
+    request.session['tentativas'] = 0
+
+    Voo.objects.filter(id = id).delete()
+    
+    return redirect('central')
+
 def home(request, context = {'permisao':'Negada'}):
+    request.session['tentativas'] = 0
     voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos_dinamico':voos_dinamico}
     
     return render(request,'home.html',context)
 
 def cadastrar(request):
+    request.session['tentativas'] = 0
     form = CadastrarVoo(request.POST)
     context={'form':form}
     if request.method == "POST":
         if form.is_valid():
+            print("cadastro")
             post = form.save(commit=False)
             post.save()
-            estado = Estado_Dinamico.objects.create(voo = post , status= 'EMB', data_saida ='0001-01-01 00:00', data_chegada ='0001-01-01 01:01')
+            Estado_Dinamico.objects.create(voo = post , status= 'EMB', data_saida ='1111-01-01 00:00', data_chegada ='1111-01-01 01:01')
         return redirect('cadastrar')
     return render(request,'cadastrar.html',context)
 
-
 def central(request):
-    # Listagem ainda não implementada no front
-    filter = {}
+    request.session['tentativas'] = 0
+
+    voos=Estado_Dinamico.objects.all()
+    filter = FiltroCentral(request.GET, queryset=voos)
     voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos_dinamico':voos_dinamico}
+    context={'voos_dinamico':voos_dinamico,'estado':'listar','filter':filter}
     return render(request, 'central.html',context)
 
 def monitorar(request):
-    form = MonitorarVoo()
-    voos = Estado_Dinamico.objects.select_related()
-    context={'form':form,'voos':voos}
-    if request.method == "POST":
-        form = MonitorarVoo(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            voo_dinamico = get_object_or_404(Estado_Dinamico, codigo = post.codigo)
-            voo_dinamico = post
-            voo_dinamico.save()
-            return redirect('monitorar')
+    request.session['tentativas'] = 0
+    form = MonitorarVoo(request.POST)
+    voos_dinamico = Estado_Dinamico.objects.select_related()
+
+    voos = Estado_Dinamico.objects.all()
+    filter = FiltroMonitorar(request.GET, queryset=voos)
+    
+    context={'voos_dinamico':voos_dinamico,'estado' : 'listagem','form':form,'filter':filter}
+    
     return render(request, 'monitorar.html',context)
 
+def monitoramento(request,id):
+    request.session['tentativas'] = 0
+
+    voo = Voo.objects.get(id = id)
+    estado = Estado_Dinamico.objects.get(voo = voo)
+    form = MonitorarVoo(instance=estado)
+
+    voos_dinamico = Estado_Dinamico.objects.select_related()
+    
+    if request.method == "POST":
+        form = MonitorarVoo(request.POST,instance=estado)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('monitorar')
+
+        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+        return render(request,'monitorar.html',context)
+
+    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+    return render(request,'monitorar.html',context)
+
 def relatorio(request):
+    request.session['tentativas'] = 0
     # Listagem ainda não implementada no front
     voos=Voo.objects.all()
     voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos':voos,'voos_dinamico':voos_dinamico}
     return render(request, 'relatorio.html',context)
 
-
-
-# funcoes adicionais
-def deletar(request):
-    voos_del = request.POST['codigos']
-    voos_del = voos_del.split(",")
-    voos = Voo.objects.filter(codigo = voos_del)
-    voos.delete()
-    return redirect('central')
-
-
+# pravavelmente não vai usar
 def editar_voo(request):
+    request.session['tentativas'] = 0
     form = CadastrarVoo(request.POST)
     voo_edit = request.POST['codigos']
     post = Voo.objects.filter(codigo = voo_edit)
@@ -111,3 +164,20 @@ def editar_voo(request):
             post = form.save(commit=False)
             post.save()
     return redirect('central')
+
+def relatorio(request):
+    request.session['tentativas'] = 0
+    response = HttpResponse(content_type='text.pdf')
+    response['Content-Disposition'] = 'attachment; filename="voos.pdf"'
+
+    writer = csv.writer(response)
+    writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
+ 
+    voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
+    for user in voos_cadastrados:
+        writer.writerow(user)
+ 
+    return response
+
+
+
