@@ -43,7 +43,8 @@ def login(request, context = {}):
                     funcionario = None
                 if funcionario is not None:
                     if(post.senha == funcionario.senha):
-                        context = {'permisao':funcionario.cargo}
+                        # request.session['permisao'] = funcionario.cargo
+                        # print(request.session['permisao'])
                         return render(request,'home.html',context)
                     else:
                         context={'form':form, 'mensagem':'Senha incorreta','estado':200}
@@ -61,18 +62,28 @@ def login(request, context = {}):
 
 
 def home(request):
+    request.session['tentativas'] = 0
     #EstadoDinamicoLista = Estado_Dinamico.objects.get
     all_entries = Estado_Dinamico.objects.all()
        
     return render(request,'home.html')
 
+def edit(request):
+    request.session['tentativas'] = 0
+    form = MonitorarVoo(request.POST)
+    voos_dinamico = Estado_Dinamico.objects.select_related()
+    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+    return render(request,'central.html',context)
+
 def home(request, context = {'permisao':'Negada'}):
+    request.session['tentativas'] = 0
     voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos_dinamico':voos_dinamico}
     
     return render(request,'home.html',context)
 
 def cadastrar(request):
+    request.session['tentativas'] = 0
     form = CadastrarVoo(request.POST)
     context={'form':form}
     if request.method == "POST":
@@ -85,14 +96,15 @@ def cadastrar(request):
 
 
 def central(request):
-    # Listagem ainda não implementada no front
+    request.session['tentativas'] = 0
     filter = {}
     voos=Voo.objects.all()
     voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos_dinamico':voos_dinamico}
+    context={'voos_dinamico':voos_dinamico,'estado':'listar'}
     return render(request, 'central.html',context)
 
 def monitorar(request):
+    request.session['tentativas'] = 0
     form = MonitorarVoo()
     voos = Estado_Dinamico.objects.select_related()
     context={'form':form,'voos':voos}
@@ -107,6 +119,7 @@ def monitorar(request):
     return render(request, 'monitorar.html',context)
 
 def relatorio(request):
+    request.session['tentativas'] = 0
     # Listagem ainda não implementada no front
     voos=Voo.objects.all()
     voos_dinamico = Estado_Dinamico.objects.select_related()
@@ -114,6 +127,7 @@ def relatorio(request):
     return render(request, 'relatorio.html',context)
 
 def editar_voo(request):
+    request.session['tentativas'] = 0
     form = CadastrarVoo(request.POST)
     voo_edit = request.POST['codigos']
     post = Voo.objects.filter(codigo = voo_edit)
@@ -125,6 +139,7 @@ def editar_voo(request):
     return redirect('central')
 
 def relatorio(request):
+    request.session['tentativas'] = 0
     response = HttpResponse(content_type='text.pdf')
     response['Content-Disposition'] = 'attachment; filename="voos.pdf"'
 

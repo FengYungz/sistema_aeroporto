@@ -29,13 +29,23 @@
             <h1>Listar Voos</h1>
     </header>
     <div class="dashboard">
+        {% if estado == 'edicao' %}
+        <form method="post">
+            <h1 class="titulo">Editar</h1>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Editar</button>
+        </form>
+        {% else %}
         {% for voo_dinamico in voos_dinamico %}
         <div class="dados">
             <h2>{{ voo_dinamico.voo.codigo }}</h2>
             <h2>{{ voo_dinamico.voo.companhia }}</h2>
             <h2>{{ voo_dinamico.status }}</h2>
+            <h2><a href="{% url 'edit' voo_dinamico.voo.id %}">Editar </a></h2>
         </div>
         {% endfor %}
+        {% endif %}
     </div>
     </div>
     {% endblock %}
