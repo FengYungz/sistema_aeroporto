@@ -30,7 +30,14 @@
 
     </header>
     <div class="dashboard">
+<<<<<<< HEAD
         <h1>Listar Voos</h1>
+=======
+        <form method="GET">
+            {{ filter.form.as_p }}
+            <input type="submit" />
+        </form>
+>>>>>>> 3005fd25a1e35f35390fe93a365351178c1147ad
         {% if estado == 'edicao' %}
         <form method="post">
             <h1 class="titulo">Editar</h1>
@@ -39,12 +46,13 @@
             <button type="submit">Editar</button>
         </form>
         {% else %}
-        {% for voo_dinamico in voos_dinamico %}
+        {% for voo in filter.qs %}
         <div class="dados">
-            <h2>{{ voo_dinamico.voo.codigo }}</h2>
-            <h2>{{ voo_dinamico.voo.companhia }}</h2>
-            <h2>{{ voo_dinamico.status }}</h2>
-            <h2><a href="{% url 'edit' voo_dinamico.voo.id %}">Editar </a></h2>
+            <h2>{{ voo.codigo }}</h2>
+            <h2>{{ voo.companhia }}</h2>
+           
+            <h2><a href="{% url 'edit' voo.id %}">Editar </a></h2>
+            <h2><a href="{% url 'deletar' voo.id %}">Excluir </a></h2>
         </div>
         {% endfor %}
         {% endif %}
