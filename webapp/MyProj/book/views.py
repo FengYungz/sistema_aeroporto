@@ -15,6 +15,7 @@ from .filters import FiltroCentral, FiltroMonitorar
 
 def login(request, context = {}):
     form = Login()
+    context={}
     
     if 'tentativas' in request.session:
         tentativas = request.session['tentativas']
@@ -164,10 +165,10 @@ def editar_voo(request):
             post.save()
     return redirect('central')
 
-def relatorio(request):
+def relatorio1(request):
     request.session['tentativas'] = 0
-    response = HttpResponse(content_type='text.pdf')
-    response['Content-Disposition'] = 'attachment; filename="voos.pdf"'
+    response = HttpResponse(content_type='text.csv')
+    response['Content-Disposition'] = 'attachment; filename="voos.csv"'
 
     writer = csv.writer(response)
     writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
@@ -177,6 +178,21 @@ def relatorio(request):
         writer.writerow(user)
  
     return response
+
+def relatorio2(request):
+    request.session['tentativas'] = 0
+    response = HttpResponse(content_type='text.csv')
+    response['Content-Disposition'] = 'attachment; filename="voos.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
+ 
+    voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
+    for user in voos_cadastrados:
+        writer.writerow(user)
+ 
+    return response
+
 
 
 
