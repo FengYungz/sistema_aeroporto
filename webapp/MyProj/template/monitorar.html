@@ -3,6 +3,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Monitorar</title>
     <meta charset="UTF-8">
@@ -11,25 +12,44 @@
     <link rel="stylesheet" href="{% static 'css/global.css' %}" />
     <link rel="stylesheet" href="{% static 'css/monitorar.css' %}" />
 </head>
+
 <body>
     {% block content %}
-        <header>
-            <div class="content">
-                <div class="column-left">
-                  <a href="{% url 'home' %}">MENU DE OPCOES</a>
-                  <ul class="menu">
+    <header>
+        <div class="content">
+            <div class="column-left">
+                <a href="{% url 'home' %}">MENU DE OPCOES</a>
+                <ul class="menu">
                     <li><a href="{% url 'cadastrar' %}">Cadastrar</a></li>
                     <li><a href="{% url 'central' %}">Listar Voos</a></li>
                     <li><a href="{% url 'monitorar' %}">Monitorar</a></li>
                     <li><a href="{% url 'relatorio' %}">Gerar Relatório</a></li>
-                  </ul>
-                </div>
+                </ul>
+            </div>
             <h1>Monitorar Voo</h1>
-        </header>
-        <div class="dashboard">DADOS
-            <h2><a href="{% url 'login' %}">{Voltar para Login}</a></h2>
+    </header>
+    <div class="dashboard">
+        {% if estado == 'edicao' %}
+        <form method="post">
+            <h1 class="titulo">Editar</h1>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Editar</button>
+        </form>
+        {% else %}
+        {% for voo_dinamico in voos_dinamico %}
+        <div class="dados">
+            <h2>{{ voo_dinamico.voo.codigo }}</h2>
+            <h2>{{ voo_dinamico.voo.companhia }}</h2>
+            <h2>{{ voo_dinamico.status }}</h2>
+            <h2><a href="{% url 'monitoramento' voo_dinamico.voo.id %}">Editar </a></h2>
         </div>
+        {% endfor %}
+        {% endif %}
+        <h2><a href="{% url 'login' %}">{Voltar para Login}</a></h2>
+    </div>
     </div>
     {% endblock %}
 </body>
+
 </html>

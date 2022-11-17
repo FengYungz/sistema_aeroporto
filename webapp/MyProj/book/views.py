@@ -16,8 +16,6 @@ from django.http import HttpResponse
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-
-# Create your views here.
 def login(request, context = {}):
     form = Login()
     
@@ -57,7 +55,6 @@ def login(request, context = {}):
         form = Login()
         context={'form':form,'estado':200}
     return render(request, 'login.html', context)
-
 
 def edit(request,id):
     request.session['tentativas'] = 0
@@ -106,7 +103,6 @@ def cadastrar(request):
         return redirect('cadastrar')
     return render(request,'cadastrar.html',context)
 
-
 def central(request):
     request.session['tentativas'] = 0
     filter = {}
@@ -117,18 +113,33 @@ def central(request):
 
 def monitorar(request):
     request.session['tentativas'] = 0
-    form = MonitorarVoo()
-    voos = Estado_Dinamico.objects.select_related()
-    context={'form':form,'voos':voos}
+    form = MonitorarVoo(request.POST)
+    voos_dinamico = Estado_Dinamico.objects.select_related()
+    context={'voos_dinamico':voos_dinamico,'estado' : 'listagem','form':form}
+    
+    return render(request, 'monitorar.html',context)
+
+def monitoramento(request,id):
+    request.session['tentativas'] = 0
+
+    voo = Voo.objects.get(id = id)
+    estado = Estado_Dinamico.objects.get(voo = voo)
+    form = MonitorarVoo(instance=estado)
+
+    voos_dinamico = Estado_Dinamico.objects.select_related()
+    
     if request.method == "POST":
-        form = MonitorarVoo(request.POST)
+        form = MonitorarVoo(request.POST,instance=estado)
         if form.is_valid():
             post = form.save(commit=False)
-            voo_dinamico = get_object_or_404(Estado_Dinamico, codigo = post.codigo)
-            voo_dinamico = post
-            voo_dinamico.save()
+            post.save()
             return redirect('monitorar')
-    return render(request, 'monitorar.html',context)
+
+        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+        return render(request,'monitorar.html',context)
+
+    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+    return render(request,'monitorar.html',context)
 
 def relatorio(request):
     request.session['tentativas'] = 0
