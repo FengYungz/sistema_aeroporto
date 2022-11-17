@@ -1,20 +1,17 @@
 import csv
 import dbm
-from multiprocessing import context
 import pkgutil
 import sqlite3
-from turtle import pd
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.urls import reverse
-from django.shortcuts import render, get_object_or_404
-from .forms import Login, CadastrarVoo, MonitorarVoo
-from django.utils import timezone
-from .models import Voo, Estado_Dinamico, Funcionario
 
-from django.http import HttpResponse
+from django.shortcuts import render,redirect,get_object_or_404
+from django.urls import reverse
+from django.utils import timezone
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+
+from .forms import Login, CadastrarVoo, MonitorarVoo
+from .models import Voo, Estado_Dinamico, Funcionario
+from .filters import FiltroCentral
 
 def login(request, context = {}):
     form = Login()
@@ -105,10 +102,11 @@ def cadastrar(request):
 
 def central(request):
     request.session['tentativas'] = 0
-    filter = {}
+
     voos=Voo.objects.all()
+    filter = FiltroCentral(request.GET, queryset=voos)
     voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos_dinamico':voos_dinamico,'estado':'listar'}
+    context={'voos_dinamico':voos_dinamico,'estado':'listar','filter':filter}
     return render(request, 'central.html',context)
 
 def monitorar(request):
