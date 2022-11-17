@@ -18,5 +18,7 @@ urlpatterns = [
     # Relatorio
     path('relatorio/', views.relatorio, name = 'relatorio'),
     path('relatorio1/', views.relatorio1, name = 'relatorio1'),
-    path('relatorio2/', views.relatorio2, name = 'relatorio2')
+    path('relatorio2/', views.relatorio2, name = 'relatorio2'),
+
+    path('erro/', views.erro, name = 'erro')
 ]

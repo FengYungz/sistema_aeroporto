@@ -16,11 +16,12 @@
         {% if user.is_authenticated %}
             Hi {{ user.username }}!
             {% else %}
-            <h1>{{mensagem}}</h1>
             {% if estado == 400 %}
+                <h1  class="titulo">{{mensagem}}</h1>
                 {% else %}
                 <form method="post">
                     <h1 class="titulo">Entrar</h1>
+                    <h1>{{mensagem}}</h1>
                     {% csrf_token %}
                     {{ form.as_p }}
                     <span>Esqueci minha senha</span>

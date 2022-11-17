@@ -21,7 +21,7 @@ class Voo(models.Model):
 
 	id = models.BigAutoField(primary_key=True)
 
-	codigo = models.CharField(max_length=12, null=False)
+	codigo = models.CharField(max_length=12, null=False,unique = True)
 	companhia = models.CharField(max_length=3,choices=STATUS, null=False)
 	
 	previsao_chegada = models.DateTimeField(null=False)
@@ -40,17 +40,18 @@ class Estado_Dinamico(models.Model):
     )
 
 	STATUS = [
-		('EMB', 'Embarque'),
-		('PSO', 'Pouso'),
-		('DEC', 'Decolagem'),
-		('FIN', 'Finalizado'),
+		('Embarque', 'Embarque'),
+		('Pouso', 'Pouso'),
+		('Decolagem', 'Decolagem'),
+		('Finalizado', 'Finalizado'),
+		('Nda', 'Nda'),
 		# adicionar mais estados aqui abaixo
 	]
 
-	data_saida = models.DateTimeField(blank=True)
-	data_chegada = models.DateTimeField(blank=True)
+	data_saida = models.DateTimeField(null=True)
+	data_chegada = models.DateTimeField(null=True)
 	
-	status = models.CharField(max_length=3,choices=STATUS,default = 'EMB')
+	status = models.CharField(max_length=10,choices=STATUS,default = 'EMB')
 
 	class Meta:
 			db_table = 'estado_dinamico'
@@ -65,5 +66,3 @@ class Funcionario(models.Model):
 
 	class Meta:
 		db_table = 'Funcionarios'
-
-
