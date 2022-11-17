@@ -176,7 +176,6 @@ def relatorio1(request):
     voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
     for user in voos_cadastrados:
         writer.writerow(user)
- 
     return response
 
 def relatorio2(request):
