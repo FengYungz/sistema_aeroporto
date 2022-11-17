@@ -13,9 +13,6 @@ from django.utils import timezone
 from .models import Voo, Estado_Dinamico, Funcionario
 
 from django.http import HttpResponse
-# esse importe esta dando erro
-# import xlwt
-
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
@@ -145,14 +142,12 @@ def relatorio(request):
 
     writer = csv.writer(response)
     writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
-
+ 
     voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
     for user in voos_cadastrados:
         writer.writerow(user)
-
+ 
     return response
-
-    
 
 
 

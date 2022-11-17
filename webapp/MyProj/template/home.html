@@ -15,8 +15,9 @@
     {% block content %}
         <header>
             <div class="content">
+                <a class="voltar" href="{% url 'login' %}"><img src="{% static 'images/back.svg' %}" alt=""></a>
                 <div class="column-left">
-                  <a href="{% url 'home' %}">MENU DE OPCOES</a>
+                  <a href="{% url 'home' %}">AERO SISTEM</a>
                   <ul class="menu">
                     <li><a href="{% url 'cadastrar' %}">Cadastrar</a></li>
                     <li><a href="{% url 'central' %}">Listar Voos</a></li>
@@ -24,7 +25,6 @@
                     <li><a href="{% url 'relatorio' %}">Gerar Relatório</a></li>
                   </ul>
                 </div>
-            <h1>DASHBOARD</h1>
         </header>
         <div class="dashboard">
             {% for voo in voos_dinamico %}
@@ -58,6 +58,5 @@
         </div>
     {% endfor %}
     {% endblock %}
-    <h2><a href="{% url 'login' %}">{Voltar para Login}</a></h2>
 </body>
 </html>
