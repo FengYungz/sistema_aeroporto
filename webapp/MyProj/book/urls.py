@@ -16,5 +16,7 @@ urlpatterns = [
     path('monitoramento/<int:id>', views.monitoramento, name = 'monitoramento'),
 
     # Relatorio
-    path('relatorio/', views.relatorio, name = 'relatorio')
+    path('relatorio/', views.relatorio, name = 'relatorio'),
+    path('relatorio1/', views.relatorio1, name = 'relatorio1'),
+    path('relatorio2/', views.relatorio2, name = 'relatorio2')
 ]
