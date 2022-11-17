@@ -1,7 +1,9 @@
 import csv
 import dbm
+import io
 import pkgutil
 import sqlite3
+
 
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
@@ -9,7 +11,10 @@ from django.utils import timezone
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-from .forms import Login, CadastrarVoo, MonitorarVoo
+# from reportlab.pdfgen import canvas
+from django.http import FileResponse
+
+from .forms import Login, CadastrarVoo, MonitorarVoo,EditarVoo
 from .models import Voo, Estado_Dinamico, Funcionario
 from .filters import FiltroCentral, FiltroMonitorar
 
@@ -58,7 +63,7 @@ def edit(request,id):
     request.session['tentativas'] = 0
 
     voo = Voo.objects.get(id = id)
-    form = CadastrarVoo(instance=voo)
+    form = EditarVoo(instance=voo)
     voos_dinamico = Estado_Dinamico.objects.select_related()
     
     if request.method == "POST":
@@ -71,10 +76,10 @@ def edit(request,id):
             post.save()
             return redirect('central')
 
-        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'mensagem': voo.codigo}
         return render(request,'central.html',context)
 
-    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'mensagem': voo.codigo}
     return render(request,'central.html',context)
 
 def deletar(request,id):
@@ -183,7 +188,9 @@ def relatorio1(request):
     voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
     for user in voos_cadastrados:
         writer.writerow(user)
+   
     return response
+
 
 def relatorio2(request):
     request.session['tentativas'] = 0
@@ -191,13 +198,29 @@ def relatorio2(request):
     response['Content-Disposition'] = 'attachment; filename="voos.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
+    writer.writerow(['voo', 'data_saida', 'data_chegada', 'status'])
  
-    voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
+    voos_cadastrados = Estado_Dinamico.objects.all().values_list('voo', 'data_saida', 'data_chegada', 'status')
     for user in voos_cadastrados:
         writer.writerow(user)
  
+   
     return response
+
+
+   
+    # request.session['tentativas'] = 0
+    # response = HttpResponse(content_type='text.csv')
+    # response['Content-Disposition'] = 'attachment; filename="voos.csv"'
+
+    # writer = csv.writer(response)
+    # writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
+ 
+    # voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
+    # for user in voos_cadastrados:
+    #     writer.writerow(user)
+ 
+    #return response
 
 
 def erro(request,mensagem):
