@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 from .forms import Login, CadastrarVoo, MonitorarVoo
 from .models import Voo, Estado_Dinamico, Funcionario
-from .filters import FiltroCentral
+from .filters import FiltroCentral, FiltroMonitorar
 
 def login(request, context = {}):
     form = Login()
@@ -103,7 +103,7 @@ def cadastrar(request):
 def central(request):
     request.session['tentativas'] = 0
 
-    voos=Voo.objects.all()
+    voos=Estado_Dinamico.objects.all()
     filter = FiltroCentral(request.GET, queryset=voos)
     voos_dinamico = Estado_Dinamico.objects.select_related()
     context={'voos_dinamico':voos_dinamico,'estado':'listar','filter':filter}
@@ -113,7 +113,11 @@ def monitorar(request):
     request.session['tentativas'] = 0
     form = MonitorarVoo(request.POST)
     voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos_dinamico':voos_dinamico,'estado' : 'listagem','form':form}
+
+    voos = Estado_Dinamico.objects.all()
+    filter = FiltroMonitorar(request.GET, queryset=voos)
+    
+    context={'voos_dinamico':voos_dinamico,'estado' : 'listagem','form':form,'filter':filter}
     
     return render(request, 'monitorar.html',context)
 
