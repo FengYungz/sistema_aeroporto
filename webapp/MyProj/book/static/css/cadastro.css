@@ -67,3 +67,44 @@ button {
     color: var(--branco);
     margin-bottom: 30px;
 }
+
+.content{
+    display: flex;
+    justify-content: center;
+    background-color: var(--text);
+
+}
+
+.column-left{
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+}
+
+a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: var(--branco);
+}
+
+a:hover {
+    background-color: var(--fundo);
+    border-radius: 5px;
+    transition: 0.5s;
+}
+
+ul{
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+}
+
+li{
+    font-size: 15px;
+}
+
+a img{
+    height: 25px;
+    width: 25px;
+    margin-top: 10px
+}
