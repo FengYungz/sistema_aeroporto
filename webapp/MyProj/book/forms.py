@@ -17,6 +17,18 @@ class CadastrarVoo(forms.ModelForm):
 
 class MonitorarVoo(forms.ModelForm):
 
+    data_saida = forms.DateTimeField(
+        label=("Data de saida"),
+        required=False
+    )
+    data_chegada = forms.DateTimeField(
+        label=("Data de chegada"),
+        required=False
+    )
+    status = forms.CharField(
+        label=("Status"),
+        max_length=10
+    )
     class Meta:
         model = Estado_Dinamico
         fields = ('data_saida', 'data_chegada', 'status')

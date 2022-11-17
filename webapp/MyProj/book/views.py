@@ -101,7 +101,7 @@ def cadastrar(request):
             if post.previsao_partida > post.previsao_chegada:
                 return erro(request,'Erro: previsao de chegada menor que a de saida ')
             post.save()
-            Estado_Dinamico.objects.create(voo = post , status= 'EMB', data_saida ='1111-01-01 00:00', data_chegada ='1111-01-01 01:01')
+            Estado_Dinamico.objects.create(voo = post , status= 'Nda')
         return redirect('cadastrar')
     return render(request,'cadastrar.html',context)
 
@@ -139,8 +139,9 @@ def monitoramento(request,id):
         form = MonitorarVoo(request.POST,instance=estado)
         if form.is_valid():
             post = form.save(commit=False)
-            if post.data_saida > post.data_chegada:
-                return erro(request,'Erro: data de chegada menor que a de saida ')
+            if post.data_chegada is not None:
+                if post.data_saida > post.data_chegada:
+                    return erro(request,'Erro: data de chegada menor que a de saida ')
             post.save()
             return redirect('monitorar')
 
