@@ -43,6 +43,7 @@
             <h2>{{ voo_dinamico.voo.companhia }}</h2>
             <h2>{{ voo_dinamico.status }}</h2>
             <h2><a href="{% url 'edit' voo_dinamico.voo.id %}">Editar </a></h2>
+            <h2><a href="{% url 'deletar' voo_dinamico.voo.id %}">Excluir </a></h2>
         </div>
         {% endfor %}
         {% endif %}
