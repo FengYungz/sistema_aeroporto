@@ -3,7 +3,8 @@ import dbm
 import io
 import pkgutil
 import sqlite3
-
+import pdfkit
+import pandas as pd 
 
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
@@ -12,6 +13,9 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from fpdf import FPDF
 from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+
 from django.http import FileResponse
 
 from .forms import Login, CadastrarVoo, MonitorarVoo
@@ -171,35 +175,48 @@ def editar_voo(request):
     return redirect('central')
 
 def relatorio1(request):
-    request.session['tentativas'] = 0
-    response = HttpResponse(content_type='text.csv')
-    response['Content-Disposition'] = 'attachment; filename="voos.csv"'
+    result = Estado_Dinamico.objects.select_related().values()             # return ValuesQuerySet object
+    list_result = [entry for entry in result]
+    
+    pdf = FPDF('P', 'mm', 'A4')
+    pdf.add_page()
+    pdf.set_font('courier', 'B', 16)
+    pdf.cell(40, 10, 'Estado dos Voos Cadastrados',0,1)
+    pdf.cell(40, 10, '',0,1)
+    pdf.set_font('courier', '', 12)
+    pdf.cell(200, 8, f"{'codigo'}{'data_saida'} {'data_chegada'} {'status'}", 0, 1, 2, 3)
+    pdf.line(10, 30, 150, 30)
+    pdf.line(10, 38, 150, 38)
 
-    writer = csv.writer(response)
-    writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
- 
-    voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
-    for user in voos_cadastrados:
-        writer.writerow(user)
- 
-   
-    return response
+    for line in list_result:
+        voo = Voo.objects.get(id = line['voo_id'])
+        pdf.cell(200, 8, f"{voo.codigo} {line['data_saida']} {line['data_chegada']} {line['status']}", 0, 1, 2, 3)
+    pdf.output('report.pdf', 'F')
+
+    return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')
+
+
 
 
 def relatorio2(request):
-    request.session['tentativas'] = 0
-    response = HttpResponse(content_type='text.csv')
-    response['Content-Disposition'] = 'attachment; filename="voos.csv"'
+    result = Voo.objects.select_related().values()             # return ValuesQuerySet object
+    list_result = [entry for entry in result]
+    
+    pdf = FPDF('P', 'mm', 'A4')
+    pdf.add_page()
+    pdf.set_font('courier', 'B', 16)
+    pdf.cell(40, 10, 'Voos Cadastrados',0,1)
+    pdf.cell(40, 10, '',0,1)
+    pdf.set_font('courier', '', 12)
+    pdf.cell(200, 8, f"{'codigo'}{'companhia'}{'previsao_chegada'}{'previsao_partida'}{'rota'}", 0, 1, 2, 3)
+    pdf.line(10, 30, 150, 30)
+    pdf.line(10, 38, 150, 38)
 
-    writer = csv.writer(response)
-    writer.writerow(['voo', 'data_saida', 'data_chegada', 'status'])
- 
-    voos_cadastrados = Estado_Dinamico.objects.all().values_list('voo', 'data_saida', 'data_chegada', 'status')
-    for user in voos_cadastrados:
-        writer.writerow(user)
- 
-   
-    return response
+    for line in list_result:
+        pdf.cell(200, 8, f"{line['codigo']} {line['companhia']} {line['previsao_chegada']} {line['previsao_partida']} {line['rota']}", 0, 1, 2, 3)
+    pdf.output('report.pdf', 'F')
+
+    return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')
 
 
    
