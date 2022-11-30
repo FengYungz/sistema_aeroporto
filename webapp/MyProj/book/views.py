@@ -180,20 +180,24 @@ def editar_voo(request):
 
 
 def relatorio1(request):
-    request.session['tentativas'] = 0
-    response = HttpResponse(content_type='text.csv')
-    response['Content-Disposition'] = 'attachment; filename="voos.csv"'
+    result = Voo.objects.select_related().values()             
+    list_result = [entry for entry in result]
+    
+    pdf = FPDF('P', 'mm', 'A4')
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 20)
+    pdf.cell(180, 10, 'Voos Cadastrados',ln=2, align='C')
+    pdf.cell(40, 10, '',0,1)
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(200, 8, f"{'Código'}      {'Companhia'}       {'Previsão_chegada'}                         {'Previsão_partida'}                       {'Rota'}", 0, 1, 2, 3)
+    pdf.line(10, 30, 200, 30)
+    pdf.line(10, 38, 200, 38)
 
-    writer = csv.writer(response)
-    writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
- 
-    voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
-    for user in voos_cadastrados:
-        writer.writerow(user)
- 
-   
-    return response
+    for line in list_result:
+        pdf.cell(200, 8, f"{line['codigo']}          {line['companhia']}          {line['previsao_chegada']}          {line['previsao_partida']}          {line['rota']}", 0, 1, 2, 3)
+    pdf.output('report.pdf', 'F')
 
+    return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')    
 
 def relatorio2(request):
     result = Estado_Dinamico.objects.select_related().values()          
