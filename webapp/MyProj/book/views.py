@@ -211,7 +211,7 @@ def relatorio(request):
 
 
 def relatorio1(request):
-    result = Voo.objects.select_related().values()             
+    result = Voo.objects.select_related().order_by('codigo')[:10].values()             
     list_result = [entry for entry in result]
     
     pdf = FPDF('P', 'mm', 'A4')
@@ -220,18 +220,18 @@ def relatorio1(request):
     pdf.cell(180, 10, 'Voos Cadastrados',ln=2, align='C')
     pdf.cell(40, 10, '',0,1)
     pdf.set_font('Arial', '', 12)
-    pdf.cell(200, 8, f"{'Código'}      {'Companhia'}       {'Previsão_chegada'}                         {'Previsão_partida'}                       {'Rota'}", 0, 1, 2, 3)
+    pdf.cell(200, 8, f"{'Código'}      {'Companhia'}       {'Previsão_chegada'}                         {'Previsão_partida'}                       {'Rota'}", 0, 1)
     pdf.line(10, 30, 200, 30)
     pdf.line(10, 38, 200, 38)
 
     for line in list_result:
-        pdf.cell(200, 8, f"{line['codigo']}          {line['companhia']}          {line['previsao_chegada']}          {line['previsao_partida']}          {line['rota']}", 0, 1, 2, 3)
+        pdf.cell(200, 8, f"{line['codigo']}          {line['companhia']}          {line['previsao_chegada']}          {line['previsao_partida']}          {line['rota']}", 0, 1)
     pdf.output('report.pdf', 'F')
 
     return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')    
 
 def relatorio2(request):
-    result = Estado_Dinamico.objects.select_related().values()          
+    result = Estado_Dinamico.objects.select_related().order_by('voo__codigo')[:10].values()               
     list_result = [entry for entry in result]
     
     pdf = FPDF('P', 'mm', 'A4')
@@ -240,36 +240,58 @@ def relatorio2(request):
     pdf.cell(180, 10, 'Estado dos Voos Cadastrados', ln=2, align='C')
     pdf.cell(40, 10, '',0,1)
     pdf.set_font('Arial', '', 12)
-    pdf.cell(200, 8, f"{'Código'}              {'Data_saída'}                                    {'Data_chegada'}                          {'Status'}", 0, 2, 4, 6)
+    pdf.cell(200, 8, f"{'Código'}              {'Data_saída'}                                    {'Data_chegada'}                          {'Status'}", 0, 1)
     pdf.line(10, 30, 180, 30)
     pdf.line(10, 38, 180, 38)
 
     for line in list_result:
         voo = Voo.objects.get(id = line['voo_id'])
-        pdf.cell(200, 8, f"{voo.codigo}       {line['data_saida']}           {line['data_chegada']}              {line['status']}", 0, 2, 4, 6)
+        pdf.cell(200, 8, f"{voo.codigo}       {line['data_saida']}           {line['data_chegada']}              {line['status']}", 0, 1)
     pdf.output('report.pdf', 'F')
 
     return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')
 
 
-
-
-
-
-
+def relatorio1all(request):
+    result = Voo.objects.select_related().order_by('codigo').values()            
+    list_result = [entry for entry in result]
    
-    # request.session['tentativas'] = 0
-    # response = HttpResponse(content_type='text.csv')
-    # response['Content-Disposition'] = 'attachment; filename="voos.csv"'
-
-    # writer = csv.writer(response)
-    # writer.writerow(['codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota'])
+    pdf = FPDF('P', 'mm', 'A4')
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 20)
+    pdf.cell(180, 10, 'Voos Cadastrados',ln=2, align='C')
+    pdf.cell(40, 10, '',0,1)
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(200, 8, f"{'Código'}      {'Companhia'}       {'Previsão_chegada'}                         {'Previsão_partida'}                       {'Rota'}", 0, 1)
+    pdf.line(10, 30, 200, 30)
+    pdf.line(10, 38, 200, 38)
  
-    # voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
-    # for user in voos_cadastrados:
-    #     writer.writerow(user)
+    for line in list_result:
+        pdf.cell(200, 8, f"{line['codigo']}          {line['companhia']}          {line['previsao_chegada']}          {line['previsao_partida']}          {line['rota']}", 0, 1)
+    pdf.output('report.pdf', 'F')
  
-    #return response
+    return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')    
+ 
+def relatorio2all(request):
+    result = Estado_Dinamico.objects.select_related().order_by('voo__codigo').values()          
+    list_result = [entry for entry in result]
+   
+    pdf = FPDF('P', 'mm', 'A4')
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 20)
+    pdf.cell(180, 10, 'Estado dos Voos Cadastrados', ln=2, align='C')
+    pdf.cell(40, 10, '',0,1)
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(200, 8, f"{'Código'}              {'Data_saída'}                                    {'Data_chegada'}                          {'Status'}", 0, 1)
+    pdf.line(10, 30, 180, 30)
+    pdf.line(10, 38, 180, 38)
+ 
+    for line in list_result:
+        voo = Voo.objects.get(id = line['voo_id'])
+        pdf.cell(200, 8, f"{voo.codigo}       {line['data_saida']}           {line['data_chegada']}              {line['status']}", 0, 1)
+    pdf.output('report.pdf', 'F')
+ 
+    return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')
 
 
 def erro(request,mensagem):
