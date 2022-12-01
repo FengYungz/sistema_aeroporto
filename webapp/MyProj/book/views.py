@@ -92,7 +92,7 @@ def deletar(request,id):
 def home(request, context = {'permissao':'Negada'}):
     request.session['tentativas'] = 0
     permissao = request.session['permissao']
-    voos_dinamico = Estado_Dinamico.objects.select_related().order_by('-voo__previsao_partida')[:10]
+    voos_dinamico = Estado_Dinamico.objects.select_related().order_by('-voo__codigo')[:10]
     context={'voos_dinamico':voos_dinamico,'permissao':permissao}
     
     return render(request,'home.html',context)
@@ -142,7 +142,7 @@ def monitoramento2(request,id):
     voo = Voo.objects.get(id = id)
     estado = Estado_Dinamico.objects.get(voo = voo)
     estadocompare = Estado_Dinamico.objects.get(voo = voo)
-    form = MonitorarVoo(request.POST or None,instance=estado)
+    form = MonitorarVoo2(request.POST or None,instance=estado)
 
     voos_dinamico = Estado_Dinamico.objects.select_related()
     
@@ -172,7 +172,7 @@ def monitoramento(request,id):
     voo = Voo.objects.get(id = id)
     estado = Estado_Dinamico.objects.get(voo = voo)
     estadocompare = Estado_Dinamico.objects.get(voo = voo)
-    form = MonitorarVoo2(request.POST or None,instance=estado)
+    form = MonitorarVoo(request.POST or None,instance=estado)
 
     voos_dinamico = Estado_Dinamico.objects.select_related()
     

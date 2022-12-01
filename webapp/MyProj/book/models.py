@@ -14,11 +14,23 @@ class Voo(models.Model):
 	]
 
 	ROTAS = [
-		('11-22', '11-22'),
-		('22-11', '22-11'),
-		('11-33', '11-33'),
-		('44-11', '44-11'),
-		# adicionar mais estados aqui abaixo
+		#SAINDO DE SÃO PAULO
+		('SP-RJ', 'SP-RJ'),
+		('SP-DF', 'SP-DF'),
+		('SP-BA', 'SP-BA'),
+		('SP-SC', 'SP-SC'),
+		('SP-PR', 'SP-PR'),
+		('SP-ES', 'SP-ES'),
+		('SP-CE', 'SP-CE'),
+
+		# VINDO PARA SAO PAULO
+		('RJ-SP', 'RJ-SP'),
+		('DF-SP', 'DF-SP'),
+		('BA-SP', 'BA-SP'),
+		('SC-SP', 'SC-SP'),
+		('PR-SP', 'PR-SP'),
+		('ES-SP', 'ES-SP'),
+		('CE-SP', 'CE-SP'),
 	]
 
 	id = models.BigAutoField(primary_key=True)
