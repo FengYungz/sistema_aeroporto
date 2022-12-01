@@ -102,3 +102,22 @@ button {
     color: var(--branco);
     margin-bottom: 30px;
 }
+
+.dados{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    padding: 2px;
+    text-align: center;
+}
+.item{
+    border: solid black 0.2px;
+}
+
+li{
+    list-style-type: none;
+    padding: 5px;
+}
+
+a.button{
+    color: var(--text)
+}

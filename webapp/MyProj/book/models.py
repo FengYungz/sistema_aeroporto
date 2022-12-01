@@ -4,18 +4,20 @@ from django.db.models.enums import Choices
 from django.utils import timezone
 import datetime
 
-
-#exemplo de instrucoes
-# Produto.objects.filter(idproduto=x)
-# Post.objects.filter(title__contains='title')
-# Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-
 class Voo(models.Model):
 	STATUS = [
 		('GOL', 'Gol'),
 		('TAM', 'TAM '),
 		('AVC', 'Avianca '),
 		('AZL', 'Azul '),
+		# adicionar mais estados aqui abaixo
+	]
+
+	ROTAS = [
+		('11-22', '11-22'),
+		('22-11', '22-11'),
+		('11-33', '11-33'),
+		('44-11', '44-11'),
 		# adicionar mais estados aqui abaixo
 	]
 
@@ -27,7 +29,7 @@ class Voo(models.Model):
 	previsao_chegada = models.DateTimeField(null=False)
 	previsao_partida = models.DateTimeField(null=False)
 
-	rota = models.CharField(max_length=200, null=False)
+	rota = models.CharField(max_length=5,choices=ROTAS, null=False)
 
 	class Meta:
 		db_table = 'Voos'
@@ -44,7 +46,7 @@ class Estado_Dinamico(models.Model):
 		('Pouso', 'Pouso'),
 		('Decolagem', 'Decolagem'),
 		('Finalizado', 'Finalizado'),
-		('Nda', 'Nda'),
+		('Espera', 'Espera'),
 		# adicionar mais estados aqui abaixo
 	]
 

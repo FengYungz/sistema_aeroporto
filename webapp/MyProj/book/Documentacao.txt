@@ -1,0 +1,23 @@
+Models de choice(fixos):
+Companhias
+		('GOL', 'Gol')
+		('TAM', 'TAM ')
+		('AVC', 'Avianca ')
+		('AZL', 'Azul ')
+
+
+Rotas -melhor alguem arrumar
+		('11-22', '11-22'),
+		('22-11', '22-11'),
+		('11-33', '11-33'),
+		('44-11', '44-11'),
+
+Status
+		('Embarque', 'Embarque'),
+		('Pouso', 'Pouso'),
+		('Decolagem', 'Decolagem'),
+		('Finalizado', 'Finalizado'),
+		('Espera', 'Espera'),
+
+
+-----------------------

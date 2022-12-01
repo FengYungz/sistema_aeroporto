@@ -21,12 +21,6 @@ header {
     overflow: hidden;
 }
 
-.dados {
-    background-color: red;
-    display: flex;
-    align-items: center;
-}
-
 .content{
     display: flex;
     justify-content: center;
@@ -56,10 +50,6 @@ ul{
     display: flex;
     justify-content: center;
     list-style-type: none;
-}
-
-li{
-    font-size: 15px;
 }
 
 a img{
@@ -103,4 +93,25 @@ button {
     cursor: pointer;
     color: var(--branco);
     margin-bottom: 30px;
+}
+
+.dados{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    padding: 2px;
+    width: 100%;
+    text-align: center;
+}
+.item{
+    border: solid black 0.2px;
+}
+
+li{
+    list-style-type: none;
+    padding: 5px;
+    color: var(--text)
+}
+
+a.button{
+    color: var(--text)
 }

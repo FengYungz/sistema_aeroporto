@@ -29,25 +29,33 @@
             </div>
     </header>
     <div class="dashboard">
-        <h1>Listar Voos</h1>
         {% if estado == 'edicao' %}
         <form method="post">
-            <h1 class="titulo">Editar</h1>
+            <h1 class="titulo">Editar voo {{mensagem}}</h1>
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Editar</button>
         </form>
         {% else %}
+        <h1>Listar Voos</h1>
         <form method="GET">
             {{ filter.form.as_p }}
             <input type="submit" />
         </form>
         {% for voo_dinamico in filter.qs %}
         <div class="dados">
-            <li>{{ voo_dinamico.voo.codigo }}</li>
-            <li>{{ voo_dinamico.voo.companhia }}</li>
-            <li><a href="{% url 'edit' voo_dinamico.voo.id %}">Editar </a></li>
-            <li><a href="{% url 'deletar' voo_dinamico.voo.id %}">Excluir </a></li>
+            <div class="item">
+                <li>Código: {{ voo_dinamico.voo.codigo }}</li>
+            </div>
+            <div class="item">
+                <li> Companhia Aérea: {{ voo_dinamico.voo.companhia }}</li>
+            </div>
+            <div class="item">
+                <li><a href="{% url 'edit' voo_dinamico.voo.id %}" class="button">Editar </a></li>
+            </div>
+            <div class="item">
+                <li><a href="{% url 'deletar' voo_dinamico.voo.id %}" class="button">Excluir </a></li>
+            </div>
         </div>
         {% endfor %}
         {% endif %}
