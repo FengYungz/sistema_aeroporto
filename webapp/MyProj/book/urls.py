@@ -13,7 +13,8 @@ urlpatterns = [
 
     # Monitorar
     path('monitorar/', views.monitorar, name = 'monitorar'),
-    path('monitoramento/<int:id>', views.monitoramento, name = 'monitoramento'),
+    path('monitoramento/chegada/<int:id>', views.monitoramento, name = 'monitoramento'),
+    path('monitoramento/saida/<int:id>', views.monitoramento2, name = 'monitoramento2'),
 
     # Relatorio
     path('relatorio/', views.relatorio, name = 'relatorio'),
