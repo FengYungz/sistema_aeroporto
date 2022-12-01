@@ -180,7 +180,7 @@ def monitoramento(request,id):
         form = MonitorarVoo2(request.POST,instance=estado)
         if form.is_valid():
             post = form
-            if post.cleaned_data['status'] != 'Pouso' or post.cleaned_data['status'] != 'Finalizado':
+            if post.cleaned_data['status'] == 'Embarque' or post.cleaned_data['status'] == 'Espera' or post.cleaned_data['status'] == 'Decolagem':
                 return erro(request,'Esta operação não pode ser realizada, utilize a opção "Editar Saida"')
             if post.cleaned_data['status'] !=  estadocompare.status :
                 if (post.cleaned_data['status'] == 'Embarque' and estadocompare.status != 'Espera') or (post.cleaned_data['status'] == 'Decolagem' and estadocompare.status != 'Embarque') or (post.cleaned_data['status'] == 'Pouso' and estadocompare.status != 'Decolagem') or (post.cleaned_data['status'] == 'Finalizado' and estadocompare.status != 'Pouso'):
