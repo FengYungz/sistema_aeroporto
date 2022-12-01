@@ -44,7 +44,7 @@ class Estado_Dinamico(models.Model):
 		('Pouso', 'Pouso'),
 		('Decolagem', 'Decolagem'),
 		('Finalizado', 'Finalizado'),
-		('Nda', 'Nda'),
+		('Espera', 'Espera'),
 		# adicionar mais estados aqui abaixo
 	]
 

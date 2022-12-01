@@ -11,11 +11,35 @@ class Login(forms.ModelForm):
 
 class CadastrarVoo(forms.ModelForm):
 
+    CHOICES = Voo.STATUS
+    companhia = forms.ChoiceField(choices = CHOICES,
+        label=("companhia")
+    )
+
     class Meta:
         model = Voo
         fields = ( 'codigo','companhia', 'previsao_chegada', 'previsao_partida', 'rota')
 
 class EditarVoo(forms.ModelForm):
+
+    previsao_partida = forms.DateTimeField(
+        label=("Previsâo de saida"),
+        required=False
+    )
+    previsao_chegada = forms.DateTimeField(
+        label=("Previsâo de chegada"),
+        required=False
+    )
+    # codigo = forms.CharField(
+    #     required=False
+    # )
+
+    # companhia = forms.CharField(
+    #     required=False
+    # )
+    # rota = forms.CharField(
+    #     required=False
+    # )
 
     class Meta:
         model = Voo
@@ -31,9 +55,10 @@ class MonitorarVoo(forms.ModelForm):
         label=("Data de chegada"),
         required=False
     )
-    status = forms.CharField(
-        label=("Status"),
-        max_length=10
+
+    CHOICES = Estado_Dinamico.STATUS
+    status = forms.ChoiceField(choices = CHOICES,
+        label=("Status")
     )
     class Meta:
         model = Estado_Dinamico
