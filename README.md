@@ -15,13 +15,6 @@ Projeto Desenvolvido na matéria PCS3643 - Laboratório de Engenharia de Softwar
 
 - Instale em sua máquina e marque a opção de adiocinar o python ao Path.
 
-# Instalando Pré-requisito Django
-
-- Use
- 
- ```bash
-pip install django
-```
 
 # Instalando Projeto
 
@@ -120,24 +113,8 @@ http://127.0.0.1:8000/
 
 ---
 
-# Para iniciar o sistema de monitoramento:
-
-## Tela de login
-
-- Utilize "123" para usuário e "123" para senha para acessar o sistema
-
-## Tela Home
-
-- Na tela principal (home), acesse a opção de cadastrar voo
----
-
-## Tela de cadastro
-
-- Na tela do cadastro, preencha as lacunas com as informações do voo e confirme
-
-## Cadastro realizado com sucesso
-
 # Rodando Testes
+
 
 Navegue até
 
@@ -163,6 +140,15 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+## Caso ocorra algum problema com a criação do banco
+
+### Use
+
+```bash
+ python manage.py migrate --run-syncdb
+```
+
+
 ---
 
 ## Executando Testes:
@@ -174,3 +160,38 @@ python manage.py test
 # Visualização do  Banco de dados
 
 - Utilize alguma extenção do VScode como SQlite ou algum programa como DBeaver e visualize suas tabelas.
+
+---
+
+# Navegando no Sistema
+
+## Tela de login
+
+- Utilize "123" para usuário e "123" para senha para acessar o sistema (Permissão de Funcionário)
+
+---
+
+## Tela Home
+
+- Você encontrará a Dashboard, uma tela onde estará disponível os dez últimos voos em andamento.
+
+---
+
+## Tela de cadastro
+
+- Na tela do cadastro, preencha as lacunas com as informações do voo e confirme a inserção de um novo voo.
+
+---
+
+## Tela de Listar Voo
+- Todos os campos são modos de filtragem para facilitar a localização do voo espefífico. Rolando a página para baixo, terá uma lista com todos os voos.
+
+---
+
+## Tela de Monitoração
+- Todos os campos são modos de filtragem para facilitar a localização do voo espefífico. Rolando a página para baixo, terá uma lista com todos os voos, podendo alterar a data e horário de partida ou de chegada
+
+---
+
+## Tela de Gerar Relatório
+- Nessa tela, você tera duas opções de relatório em nosso sistema, escolha a opção desejada e exporte para um arquivo PDF.

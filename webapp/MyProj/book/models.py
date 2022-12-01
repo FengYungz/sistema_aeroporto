@@ -4,12 +4,6 @@ from django.db.models.enums import Choices
 from django.utils import timezone
 import datetime
 
-
-#exemplo de instrucoes
-# Produto.objects.filter(idproduto=x)
-# Post.objects.filter(title__contains='title')
-# Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-
 class Voo(models.Model):
 	STATUS = [
 		('GOL', 'Gol'),
@@ -19,15 +13,35 @@ class Voo(models.Model):
 		# adicionar mais estados aqui abaixo
 	]
 
+	ROTAS = [
+		#SAINDO DE SÃO PAULO
+		('SP-RJ', 'SP-RJ'),
+		('SP-DF', 'SP-DF'),
+		('SP-BA', 'SP-BA'),
+		('SP-SC', 'SP-SC'),
+		('SP-PR', 'SP-PR'),
+		('SP-ES', 'SP-ES'),
+		('SP-CE', 'SP-CE'),
+
+		# VINDO PARA SAO PAULO
+		('RJ-SP', 'RJ-SP'),
+		('DF-SP', 'DF-SP'),
+		('BA-SP', 'BA-SP'),
+		('SC-SP', 'SC-SP'),
+		('PR-SP', 'PR-SP'),
+		('ES-SP', 'ES-SP'),
+		('CE-SP', 'CE-SP'),
+	]
+
 	id = models.BigAutoField(primary_key=True)
 
-	codigo = models.CharField(max_length=12, null=False)
+	codigo = models.CharField(max_length=12, null=False,unique = True)
 	companhia = models.CharField(max_length=3,choices=STATUS, null=False)
 	
 	previsao_chegada = models.DateTimeField(null=False)
 	previsao_partida = models.DateTimeField(null=False)
 
-	rota = models.CharField(max_length=200, null=False)
+	rota = models.CharField(max_length=5,choices=ROTAS, null=False)
 
 	class Meta:
 		db_table = 'Voos'
@@ -40,17 +54,18 @@ class Estado_Dinamico(models.Model):
     )
 
 	STATUS = [
-		('EMB', 'Embarque'),
-		('PSO', 'Pouso'),
-		('DEC', 'Decolagem'),
-		('FIN', 'Finalizado'),
+		('Embarque', 'Embarque'),
+		('Pouso', 'Pouso'),
+		('Decolagem', 'Decolagem'),
+		('Finalizado', 'Finalizado'),
+		('Espera', 'Espera'),
 		# adicionar mais estados aqui abaixo
 	]
 
-	data_saida = models.DateTimeField(blank=True)
-	data_chegada = models.DateTimeField(blank=True)
+	data_saida = models.DateTimeField(null=True)
+	data_chegada = models.DateTimeField(null=True)
 	
-	status = models.CharField(max_length=3,choices=STATUS,default = 'EMB')
+	status = models.CharField(max_length=10,choices=STATUS,default = 'EMB')
 
 	class Meta:
 			db_table = 'estado_dinamico'
@@ -65,5 +80,3 @@ class Funcionario(models.Model):
 
 	class Meta:
 		db_table = 'Funcionarios'
-
-
