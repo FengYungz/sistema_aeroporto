@@ -228,6 +228,7 @@ def relatorio1(request):
         pdf.cell(200, 8, f"{line['codigo']}          {line['companhia']}          {line['previsao_chegada']}          {line['previsao_partida']}          {line['rota']}", 0, 1)
     pdf.output('report.pdf', 'F')
 
+    return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')
 
 def relatorio2(request):
     result = Estado_Dinamico.objects.select_related().order_by('voo__codigo')[:10].values()               
