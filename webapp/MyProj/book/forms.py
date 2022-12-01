@@ -2,7 +2,6 @@ from django import forms
 
 from  .models import Voo,Estado_Dinamico,Funcionario
 
-
 class Login(forms.ModelForm):
 
     class Meta:
@@ -30,27 +29,28 @@ class EditarVoo(forms.ModelForm):
         label=("Previsâo de chegada"),
         required=False
     )
-    # codigo = forms.CharField(
-    #     required=False
-    # )
-
-    # companhia = forms.CharField(
-    #     required=False
-    # )
-    # rota = forms.CharField(
-    #     required=False
-    # )
 
     class Meta:
         model = Voo
         fields = ('previsao_chegada', 'previsao_partida')
 
-class MonitorarVoo(forms.ModelForm):
+class MonitorarVoo2(forms.ModelForm):
 
     data_saida = forms.DateTimeField(
         label=("Data de saida"),
         required=False
     )
+
+    CHOICES = Estado_Dinamico.STATUS
+    status = forms.ChoiceField(choices = CHOICES,
+        label=("Status")
+    )
+    class Meta:
+        model = Estado_Dinamico
+        fields = ('data_saida', 'status')
+
+class MonitorarVoo(forms.ModelForm):
+
     data_chegada = forms.DateTimeField(
         label=("Data de chegada"),
         required=False
@@ -62,4 +62,4 @@ class MonitorarVoo(forms.ModelForm):
     )
     class Meta:
         model = Estado_Dinamico
-        fields = ('data_saida', 'data_chegada', 'status')
+        fields = ('data_chegada', 'status')

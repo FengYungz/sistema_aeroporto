@@ -47,7 +47,8 @@
             <h2>{{ voo_dinamico.voo.codigo }}</h2>
             <h2>{{ voo_dinamico.voo.companhia }}</h2>
             <h2>{{ voo_dinamico.status }}</h2>
-            <h2><a href="{% url 'monitoramento' voo_dinamico.voo.id %}">Editar </a></h2>
+            <h2><a href="{% url 'monitoramento2' voo_dinamico.voo.id %}">Editar Partida</a></h2>
+            <h2><a href="{% url 'monitoramento' voo_dinamico.voo.id %}">Editar Chegada</a></h2>
         </div>
         {% endfor %}
         {% endif %}
