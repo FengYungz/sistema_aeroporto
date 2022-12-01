@@ -29,8 +29,12 @@
                 </div>
     </header>
     <div class="dashboard">
-        {% if permissao != 'funcionario' or 'piloto' or 'torre' %}
+        {% if permissao == 'operador' %}
             <h1>Você não tem permissão para acessar essa área!</h1>
+
+        {% elif permissao == 'gerente' %}
+            <h1>Você não tem permissão para acessar essa área!</h1>
+        
         {% else %}
         <h1>Monitorar Voo</h1>
         {% if estado == 'edicao' %}
