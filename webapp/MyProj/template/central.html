@@ -29,6 +29,10 @@
             </div>
     </header>
     <div class="dashboard">
+        {% if permissao != 'operador' %}
+            <h1>Você não tem permissão para acessar essa área!</h1>
+        {% else %}
+        
         {% if estado == 'edicao' %}
         <form method="post">
             <h1 class="titulo">Editar voo {{mensagem}}</h1>
@@ -58,6 +62,7 @@
             </div>
         </div>
         {% endfor %}
+        {% endif %}
         {% endif %}
     </div>
     </div>

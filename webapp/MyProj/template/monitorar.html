@@ -29,6 +29,9 @@
                 </div>
     </header>
     <div class="dashboard">
+        {% if permissao != 'funcionario' or 'piloto' or 'torre' %}
+            <h1>Você não tem permissão para acessar essa área!</h1>
+        {% else %}
         <h1>Monitorar Voo</h1>
         {% if estado == 'edicao' %}
         <form method="post">
@@ -61,6 +64,7 @@
             </div> 
         </div>
         {% endfor %}
+        {% endif %}
         {% endif %}
     </div>
     </div>

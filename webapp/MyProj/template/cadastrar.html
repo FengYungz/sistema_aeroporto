@@ -28,11 +28,15 @@
         </header>
         <div class="dashboard">
             <h1>Cadastrar Voo</h1>
+            {% if permissao != 'operador' %}
+            <h1>Você não tem permissão para acessar essa área!</h1>
+            {% else %}
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit">Cadastrar</button>
             </form>
+            {% endif %}
         </div>
     </div>
     {% endblock %}
