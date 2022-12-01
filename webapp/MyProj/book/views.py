@@ -147,7 +147,7 @@ def monitoramento2(request,id):
     voos_dinamico = Estado_Dinamico.objects.select_related()
     
     if request.method == "POST":
-        form = MonitorarVoo(request.POST,instance=estado)
+        form = MonitorarVoo2(request.POST,instance=estado)
         if form.is_valid():
             post = form
             if post.cleaned_data['status'] == 'Pouso' or post.cleaned_data['status'] == 'Finalizado':
@@ -155,6 +155,8 @@ def monitoramento2(request,id):
             if post.cleaned_data['status'] !=  estadocompare.status :
                 if (post.cleaned_data['status'] == 'Embarque' and estadocompare.status != 'Espera') or (post.cleaned_data['status'] == 'Decolagem' and estadocompare.status != 'Embarque') or (post.cleaned_data['status'] == 'Pouso' and estadocompare.status != 'Decolagem') or (post.cleaned_data['status'] == 'Finalizado' and estadocompare.status != 'Pouso'):
                     return erro(request,'Erro: ordem de operação incorreta: de '+estadocompare.status+' para '+ post.cleaned_data['status'])
+            if post.cleaned_data['status'] == 'Decolagem' and post.cleaned_data['data_saida'] is None:
+                return erro(request,'A data saida é obrigatoria para a decolagem')
             post.save()
             return redirect('monitorar')
 
@@ -177,16 +179,18 @@ def monitoramento(request,id):
     voos_dinamico = Estado_Dinamico.objects.select_related()
     
     if request.method == "POST":
-        form = MonitorarVoo2(request.POST,instance=estado)
+        form = MonitorarVoo(request.POST,instance=estado)
         if form.is_valid():
             post = form
-            if post.cleaned_data['status'] != 'Pouso' or post.cleaned_data['status'] != 'Finalizado':
+            if post.cleaned_data['status'] == 'Embarque' or post.cleaned_data['status'] == 'Espera' or post.cleaned_data['status'] == 'Decolagem':
                 return erro(request,'Esta operação não pode ser realizada, utilize a opção "Editar Saida"')
             if post.cleaned_data['status'] !=  estadocompare.status :
                 if (post.cleaned_data['status'] == 'Embarque' and estadocompare.status != 'Espera') or (post.cleaned_data['status'] == 'Decolagem' and estadocompare.status != 'Embarque') or (post.cleaned_data['status'] == 'Pouso' and estadocompare.status != 'Decolagem') or (post.cleaned_data['status'] == 'Finalizado' and estadocompare.status != 'Pouso'):
                     return erro(request,'Erro: ordem de operação incorreta: de '+estadocompare.status+' para '+ post.cleaned_data['status'])
             if estadocompare.data_saida is None:
                 return erro(request,'Este voo ainda não partiu')
+            if post.cleaned_data['status'] == 'Pouso' and post.cleaned_data['data_chegada'] is None:
+                return erro(request,'A data chegada é obrigatoria para a decolagem')
             if post.cleaned_data['data_chegada'] is not None:
                 if estadocompare.data_saida > post.cleaned_data['data_chegada']:
                     return erro(request,'Erro: data de chegada menor que a de saida ')
