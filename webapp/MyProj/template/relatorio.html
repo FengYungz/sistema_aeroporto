@@ -27,12 +27,18 @@
                 </div>
         </header>
         <div class="dashboard">
-            <h1>Tipos de Relatórios</h1>
-            <h1>Voos Cadastrados</h1>
-            <h2><a href="{% url 'relatorio1' %}">Relatório</a></h2>
-            <h1>Estado dos Voos Cadastrados</h1>
-            <h2><a href="{% url 'relatorio2' %}">Relatório</a></h2>
-            <h2><a href="{% url 'login' %}">{Voltar para Login}</a></h2>
+            <h1>Gerar Relatório</h1>
+            <div class="cards">
+                <div class="r1">
+                    <p>Voos Cadastrados no sistemas</p>
+                    <a href="{% url 'relatorio1' %}" class="button">Exportar</a>
+                </div>
+                <div class="r2">
+                    <p>Estado dos Voos Cadastrados</p>
+                    <a href="{% url 'relatorio2' %}" class="button">Exportar</a>
+                </div>
+            </div>
+            </div>
         </div>
     </div>
     {% endblock %}
