@@ -107,13 +107,14 @@ h1{
     justify-content: center;
     margin-bottom: 20px;
 }
+    
 
-h5{
+a.button{
     background-color: var(--fundo);
     height: 30px;
     border-radius: 2.5px;
 }
 
-a.button{
-
+p{
+    margin-bottom: 80px;
 }
