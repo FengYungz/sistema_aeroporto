@@ -3,7 +3,8 @@ import dbm
 import io
 import pkgutil
 import sqlite3
-
+import pdfkit
+import pandas as pd 
 
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
@@ -12,6 +13,9 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from fpdf import FPDF
 from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+
 from django.http import FileResponse
 
 from .forms import Login, CadastrarVoo, MonitorarVoo
@@ -177,6 +181,7 @@ def editar_voo(request):
             post.save()
     return redirect('central')
 
+
 def relatorio1(request):
     request.session['tentativas'] = 0
     response = HttpResponse(content_type='text.csv')
@@ -188,6 +193,7 @@ def relatorio1(request):
     voos_cadastrados = Voo.objects.all().values_list('codigo', 'companhia', 'previsao_chegada', 'previsao_partida', 'rota')
     for user in voos_cadastrados:
         writer.writerow(user)
+ 
    
     return response
 
@@ -197,15 +203,9 @@ def relatorio2(request):
     response = HttpResponse(content_type='text.csv')
     response['Content-Disposition'] = 'attachment; filename="voos.csv"'
 
-    writer = csv.writer(response)
-    writer.writerow(['voo', 'data_saida', 'data_chegada', 'status'])
- 
-    voos_cadastrados = Estado_Dinamico.objects.all().values_list('voo', 'data_saida', 'data_chegada', 'status')
-    for user in voos_cadastrados:
-        writer.writerow(user)
- 
-   
-    return response
+
+
+
 
 
    
