@@ -28,8 +28,6 @@ def login(request, context = {}):
     else:
         request.session['tentativas'] = 0
 
-    print(request.session['tentativas'])
-
     if request.method == "POST":
         if tentativas < 3:
             form = Login(request.POST)
@@ -60,14 +58,15 @@ def login(request, context = {}):
     return render(request, 'login.html', context)
 
 def edit(request,id):
+    permisao = request.session['permisao']
     request.session['tentativas'] = 0
 
     voo = Voo.objects.get(id = id)
-    form = EditarVoo(instance=voo)
+    form = EditarVoo(request.POST or None,instance=voo)
     voos_dinamico = Estado_Dinamico.objects.select_related()
     
     if request.method == "POST":
-        form = CadastrarVoo(request.POST,instance=voo)
+        form = EditarVoo(request.POST or None,instance=voo)
         if form.is_valid():
             
             post = form.save(commit=False)
@@ -76,10 +75,10 @@ def edit(request,id):
             post.save()
             return redirect('central')
 
-        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'mensagem': voo.codigo}
+        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'mensagem': voo.codigo,'permisao':permisao}
         return render(request,'central.html',context)
 
-    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'mensagem': voo.codigo}
+    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'mensagem': voo.codigo,'permisao':permisao}
     return render(request,'central.html',context)
 
 def deletar(request,id):
@@ -91,91 +90,91 @@ def deletar(request,id):
 
 def home(request, context = {'permisao':'Negada'}):
     request.session['tentativas'] = 0
-    voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos_dinamico':voos_dinamico}
+    permisao = request.session['permisao']
+    voos_dinamico = Estado_Dinamico.objects.select_related().order_by('-voo__previsao_partida')[:10]
+    context={'voos_dinamico':voos_dinamico,'permisao':permisao}
     
     return render(request,'home.html',context)
 
 def cadastrar(request):
+    permisao = request.session['permisao']
     request.session['tentativas'] = 0
-    form = CadastrarVoo(request.POST)
-    context={'form':form}
+    form = CadastrarVoo(request.POST or None)
+    context={'form':form,'permisao':permisao}
     if request.method == "POST":
         if form.is_valid():
             post = form.save(commit=False)
             if post.previsao_partida > post.previsao_chegada:
                 return erro(request,'Erro: previsao de chegada menor que a de saida ')
             post.save()
-            Estado_Dinamico.objects.create(voo = post , status= 'Nda')
+            Estado_Dinamico.objects.create(voo = post , status= 'Espera')
         return redirect('cadastrar')
     return render(request,'cadastrar.html',context)
 
 def central(request):
+    permisao = request.session['permisao']
     request.session['tentativas'] = 0
 
     voos=Estado_Dinamico.objects.all()
     filter = FiltroCentral(request.GET, queryset=voos)
     voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos_dinamico':voos_dinamico,'estado':'listar','filter':filter}
+    context={'voos_dinamico':voos_dinamico,'estado':'listar','filter':filter,'permisao':permisao}
     return render(request, 'central.html',context)
 
 def monitorar(request):
+    permisao = request.session['permisao']
     request.session['tentativas'] = 0
-    form = MonitorarVoo(request.POST)
+    form = MonitorarVoo(request.POST or None)
     voos_dinamico = Estado_Dinamico.objects.select_related()
 
     voos = Estado_Dinamico.objects.all()
     filter = FiltroMonitorar(request.GET, queryset=voos)
     
-    context={'voos_dinamico':voos_dinamico,'estado' : 'listagem','form':form,'filter':filter}
+    context={'voos_dinamico':voos_dinamico,'estado' : 'listagem','form':form,'filter':filter,'permisao':permisao}
     
     return render(request, 'monitorar.html',context)
 
 def monitoramento(request,id):
+    permisao = request.session['permisao']
     request.session['tentativas'] = 0
 
     voo = Voo.objects.get(id = id)
     estado = Estado_Dinamico.objects.get(voo = voo)
-    form = MonitorarVoo(instance=estado)
+    estadocompare = Estado_Dinamico.objects.get(voo = voo)
+    form = MonitorarVoo(request.POST or None,instance=estado)
 
     voos_dinamico = Estado_Dinamico.objects.select_related()
     
     if request.method == "POST":
         form = MonitorarVoo(request.POST,instance=estado)
         if form.is_valid():
-            post = form.save(commit=False)
-            if post.data_chegada is not None:
-                if post.data_saida > post.data_chegada:
+            post = form
+            print(post.cleaned_data['status'])
+            print(estadocompare.status)
+            if post.cleaned_data['status'] !=  estadocompare.status :
+                if (post.cleaned_data['status'] == 'Embarque' and estadocompare.status != 'Espera') or (post.cleaned_data['status'] == 'Decolagem' and estadocompare.status != 'Embarque') or (post.cleaned_data['status'] == 'Pouso' and estadocompare.status != 'Decolagem') or (post.cleaned_data['status'] == 'Finalizado' and estadocompare.status != 'Pouso'):
+                    return erro(request,'Erro: ordem de operação incorreta: de '+estadocompare.status+' para '+ post.cleaned_data['status'])
+            if post.cleaned_data['data_chegada'] is not None:
+                if post.cleaned_data['data_saida'] > post.cleaned_data['data_chegada']:
                     return erro(request,'Erro: data de chegada menor que a de saida ')
             post.save()
             return redirect('monitorar')
 
-        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+        context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'permisao':permisao}
         return render(request,'monitorar.html',context)
 
-    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form}
+    context={'voos_dinamico':voos_dinamico,'estado':'edicao','form':form,'permisao':permisao}
     return render(request,'monitorar.html',context)
 
 def relatorio(request):
+    permisao = request.session['permisao']
     request.session['tentativas'] = 0
     # Listagem ainda não implementada no front
     voos=Voo.objects.all()
     voos_dinamico = Estado_Dinamico.objects.select_related()
-    context={'voos':voos,'voos_dinamico':voos_dinamico}
+    context={'voos':voos,'voos_dinamico':voos_dinamico,'permisao':permisao}
     return render(request, 'relatorio.html',context)
 
-# pravavelmente não vai usar
-def editar_voo(request):
-    request.session['tentativas'] = 0
-    form = CadastrarVoo(request.POST)
-    voo_edit = request.POST['codigos']
-    post = Voo.objects.filter(codigo = voo_edit)
-    context={'form':form}
-    if request.method == "POST":
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-    return redirect('central')
 
 def relatorio1(request):
     request.session['tentativas'] = 0
