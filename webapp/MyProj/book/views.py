@@ -4,6 +4,8 @@ import io
 import pkgutil
 import sqlite3
 
+# import pdfkit
+# import pandas as pd
 
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
@@ -11,6 +13,7 @@ from django.utils import timezone
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from fpdf import FPDF
+# from reportlab.pdfgen import canvas
 from django.http import FileResponse
 
 from .forms import Login, CadastrarVoo, MonitorarVoo,MonitorarVoo2,EditarVoo
