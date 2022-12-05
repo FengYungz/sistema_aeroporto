@@ -3,8 +3,7 @@ import dbm
 import io
 import pkgutil
 import sqlite3
-import pdfkit
-import pandas as pd 
+
 
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
@@ -12,7 +11,6 @@ from django.utils import timezone
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from fpdf import FPDF
-from reportlab.pdfgen import canvas
 from django.http import FileResponse
 
 from .forms import Login, CadastrarVoo, MonitorarVoo,MonitorarVoo2,EditarVoo
@@ -92,8 +90,15 @@ def deletar(request,id):
 def home(request, context = {'permissao':'Negada'}):
     request.session['tentativas'] = 0
     permissao = request.session['permissao']
-    voos_dinamico = Estado_Dinamico.objects.select_related().order_by('-voo__codigo')[:10]
-    context={'voos_dinamico':voos_dinamico,'permissao':permissao}
+    voos_dinamicoS = Estado_Dinamico.objects.select_related().filter(voo__rota = "SP-RJ")|Estado_Dinamico.objects.select_related().filter(voo__rota = "SP-DF")
+
+    voos_dinamico2 = voos_dinamicoS.order_by('-voo__codigo')[:10]
+
+    voos_dinamicoC = Estado_Dinamico.objects.select_related().filter(voo__rota = "RJ-SP")|Estado_Dinamico.objects.select_related().filter(voo__rota = "DF-SP")
+    voos_dinamico = voos_dinamicoC.order_by('-voo__codigo')[:10]
+    context={'voos_dinamico':voos_dinamico,'voos_dinamico2':voos_dinamico2,'permissao':permissao}
+
+
     
     return render(request,'home.html',context)
 

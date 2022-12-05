@@ -13,24 +13,17 @@ class Voo(models.Model):
 		# adicionar mais estados aqui abaixo
 	]
 
+
 	ROTAS = [
 		#SAINDO DE SÃO PAULO
 		('SP-RJ', 'SP-RJ'),
 		('SP-DF', 'SP-DF'),
-		('SP-BA', 'SP-BA'),
-		('SP-SC', 'SP-SC'),
-		('SP-PR', 'SP-PR'),
-		('SP-ES', 'SP-ES'),
-		('SP-CE', 'SP-CE'),
+
 
 		# VINDO PARA SAO PAULO
 		('RJ-SP', 'RJ-SP'),
 		('DF-SP', 'DF-SP'),
-		('BA-SP', 'BA-SP'),
-		('SC-SP', 'SC-SP'),
-		('PR-SP', 'PR-SP'),
-		('ES-SP', 'ES-SP'),
-		('CE-SP', 'CE-SP'),
+
 	]
 
 	id = models.BigAutoField(primary_key=True)
