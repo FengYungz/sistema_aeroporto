@@ -34,15 +34,25 @@
             <h1>Gerar Relatório</h1>
             <div class="cards">
                 <div class="r1">
-                    <p>Voos Cadastrados no sistemas</p>
-                    <a href="{% url 'relatorio1' %}" class="button">Exportar Primeiros Dez</a>
-                    <a href="{% url 'relatorio1all' %}" class="button">Exportar Todos</a>
+                    <p>Voos Cadastrados no sistemas (Últimos 10)</p>
+                    <a href="{% url 'relatorio1' %}" class="button">Exportar</a>
                 </div>
+
                 <div class="r2">
-                    <p>Estado dos Voos Cadastrados</p>
-                    <a href="{% url 'relatorio2' %}" class="button">Exportar Primeiros Dez</a>
-                    <a href="{% url 'relatorio2all' %}" class="button">Exportar Todos</a>
+                    <p>Voos Cadastrados no sistemas (Todos)</p>
+                    <a href="{% url 'relatorio1all' %}" class="button">Exportar</a>
                 </div>
+
+                <div class="r4">
+                    <p>Estado dos Voos Cadastrados (Últimos 10)</p>
+                    <a href="{% url 'relatorio2' %}" class="button">Exportar</a>
+                </div>
+
+                <div class="r3">
+                    <p>Estado dos Voos Cadastrados (Todos)</p>
+                    <a href="{% url 'relatorio2all' %}" class="button">Exportar</a>
+                </div>
+
             </div>
             </div>
         </div>
