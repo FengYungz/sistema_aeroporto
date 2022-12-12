@@ -94,19 +94,10 @@ dir
 
 ---
 
-- Note que haverá um arquivo chamado ``` manage.py ```
-
-### Use
+### Use URL do endereço da aplicação 
 
 ```bash
-python manage.py runserver
-```
-
-- Note que será informado uma URL do endereço da aplicação 
-
-### Cole no navegador
-```bash
-http://127.0.0.1:8000/
+pmarq98.pythonanywhere.com
 
 ```
 ## Pronto, você será direcionado para página Login, agora é só testar!
@@ -167,7 +158,12 @@ python manage.py test
 
 ## Tela de login
 
-- Utilize "123" para usuário e "123" para senha para acessar o sistema (Permissão de Funcionário)
+- Usuários cadastrados: operador , 1234
+                        funcionario, 1234
+                        torre, 1234
+                        piloto, 1234
+                        gerente, 1234
+  cada um com funções específicas
 
 ---
 
