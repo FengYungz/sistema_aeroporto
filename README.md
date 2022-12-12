@@ -155,4 +155,4 @@ python manage.py test
 ---
 
 ## Tela de Gerar Relatório
-- Nessa tela, você tera duas opções de relatório em nosso sistema, escolha a opção desejada e exporte para um arquivo PDF.
+- Nessa tela, você tera 4 opções de relatório em nosso sistema, escolha a opção desejada e exporte para um arquivo PDF.
