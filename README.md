@@ -59,41 +59,6 @@ Tente isso também caso o comando acima não funcione:
 
 # Executando aplicação
 
-Navegue até
-
-```bash
-\sistema_aeroporto\webapp\MyProj
-```
-
----
-
-
-Vamos certificar que o pré-requisisto `Django` está instalado:
-
-Use
-
- ```bash
-pip install django
-```
----
-
-
-Vamos executar a aplicação:
-
-
-Use
-
-```bash
-ls
-```
-Tente isso caso o comando acima não funcionar:
-
-```bash
-dir
-```
-
----
-
 ### Use URL do endereço da aplicação 
 
 ```bash
@@ -158,11 +123,11 @@ python manage.py test
 
 ## Tela de login
 
-- Usuários cadastrados: operador , 1234
-                        funcionario, 1234
-                        torre, 1234
-                        piloto, 1234
-                        gerente, 1234
+- Usuários cadastrados: operador 1234,
+                        funcionario 1234,
+                        torre 1234,
+                        piloto 1234,
+                        gerente 1234,
   cada um com funções específicas
 
 ---
